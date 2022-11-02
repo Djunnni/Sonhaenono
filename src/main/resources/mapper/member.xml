@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sonhaenono.member.mapper.MemberMapper">
+
+
+	<resultMap type="memberDto" id="member_full">
+		<id column="id" property="id" />
+		<result column="password" property="password" />
+		<result column="name" property="name"/>
+		<result column="phone" property="phone"/>
+		<result column="email" property="email" />
+		<result column="join_date" property="joinDate"/>
+		<result column="updated_date" property="updatedDate"/>
+		<result column="type" property="type" typeHandler="com.sonhaenono.member.type.EnumMemberTypeHandler"/>
+	</resultMap>
+	
+	<!-- 회원가입 -->
+	
+	<insert id="joinMember" parameterType="memberDto">
+		insert into members
+		(id, password, name, type, phone, email) values
+		(#{id}, #{password}, #{name}, #{type, typeHandler=com.sonhaenono.member.type.EnumMemberTypeHandler}, #{phone}, #{email})
+	</insert>
+	
+	<!-- 로그인 처리 -->
+	
+	<resultMap type="memberDto" id="member_light">
+		<id column="id" property="id" />
+		<result column="password" property="password" />
+		<result column="name" property="name"/>
+		<result column="type" property="type" typeHandler="com.sonhaenono.member.type.EnumMemberTypeHandler"/>
+	</resultMap>
+	
+	<select id="loginMember" parameterType="map" resultMap="member_light">
+		select id, password, name, type
+		from members
+		where id = #{id} and password = #{password}
+	</select>
+	
+	<!-- 아이디로 계정 조회 -->
+	<select id="getMemberById" parameterType="string" resultMap="member_full">
+		select * from members where id = #{id}
+	</select>
+	
+	<!--  아이디 중복 체크 -->
+	<select id="existMemberId" parameterType="string" resultType="int">
+		select count(id)
+		from members
+		where id=#{id}
+	</select>
+	
+	<!-- 비밀번호 찾기 -->
+	<parameterMap type="map" id="findPasswordQuery">
+		<parameter property="id" />
+		<parameter property="name" />
+		<parameter property="phone" />
+	</parameterMap>
+	
+	<select id="findPassword" parameterMap="findPasswordQuery" resultType="string">
+		select password
+		from members
+		where id=#{id} and name=#{name} and phone=#{phone}
+	</select>
+</mapper>
