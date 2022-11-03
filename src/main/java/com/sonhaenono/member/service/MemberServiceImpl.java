@@ -55,29 +55,29 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public String changePassword(String id, String oldPassword, String newPassword) throws Exception {
+	public boolean changePassword(String id, String oldPassword, String newPassword) throws Exception {
 		Map<String, String> query = new HashMap<String, String>();
 		
 		query.put("id", id);
 		query.put("old_password", oldPassword);
 		query.put("new_password", newPassword);
 		
-		return memberMapper.changePassword(query);
+		return memberMapper.changePassword(query) == 1;
 	}
 
 	@Override
-	public String changeInfo(String id, Map<String, String> map) throws Exception {
+	public boolean changeInfo(String id, Map<String, String> map) throws Exception {
 		map.put("id", id);
-		return memberMapper.changeInfo(map);
+		return memberMapper.changeInfo(map) == 1;
 	}
 
 	@Override
-	public String changeType(String id, MemberType type) throws Exception {
-		Map<String, Object> query = new HashMap(); 
+	public boolean changeType(String id, MemberType type) throws Exception {
+		Map<String, String> query = new HashMap(); 
 		query.put("id", id);
-		query.put("type", type);
+		query.put("type", type.getType());
 		
-		return memberMapper.changeType(query);
+		return memberMapper.changeType(query) == 1;
 	}
 
 	

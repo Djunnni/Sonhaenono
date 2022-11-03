@@ -17,7 +17,7 @@ public interface MemberMapper {
 	List<MemberDto> getMembers() throws SQLException;
 	int existMemberId(String id) throws SQLException;
 	String findPassword(Map<String, String> query) throws SQLException;
-	String changePassword(Map<String, String> query) throws SQLException;
-	String changeInfo(Map<String, String> query) throws SQLException;
-	String changeType(Map<String, Object> query) throws SQLException;
+	int changePassword(Map<String, String> query) throws SQLException;
+	int changeInfo(Map<String, String> query) throws SQLException;
+	int changeType(Map<String, String> query) throws SQLException;
 }

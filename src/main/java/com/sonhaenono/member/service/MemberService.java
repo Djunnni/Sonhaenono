@@ -58,7 +58,7 @@ public interface MemberService {
 	 * @return
 	 * @throws Exception
 	 */
-	public String changePassword(String id, String oldPassword, String newPassword) throws Exception;
+	public boolean changePassword(String id, String oldPassword, String newPassword) throws Exception;
 	/**
 	 * 유저 정보 변경하기
 	 * @param id
@@ -71,7 +71,7 @@ public interface MemberService {
 	 * @return
 	 * @throws Exception
 	 */
-	public String changeInfo(String id, Map<String, String> map) throws Exception;
+	public boolean changeInfo(String id, Map<String, String> map) throws Exception;
 	/**
 	 * 유저 타입을 변경합니다.
 	 * @param id
@@ -79,5 +79,5 @@ public interface MemberService {
 	 * @return
 	 * @throws Exception
 	 */
-	public String changeType(String id, MemberType type) throws Exception;
+	public boolean changeType(String id, MemberType type) throws Exception;
 }

@@ -38,6 +38,9 @@
 		where id = #{id} and password = #{password}
 	</select>
 	
+	<select id="getMembers" resultMap="member_full">
+		select * from members;
+	</select>
 	<!-- 아이디로 계정 조회 -->
 	<select id="getMemberById" parameterType="string" resultMap="member_full">
 		select * from members where id = #{id}
@@ -72,7 +75,7 @@
 	 -->
 	<update id="changePassword" parameterType="map">
 		update members 
-		set password = #{new_password}
+		set password = #{new_password}, updated_date = now()
 		where id=#{id} and password=#{old_password}
 	</update>
 	
@@ -86,13 +89,13 @@
 	 -->
 	<update id="changeInfo" parameterType="map">
 		update members
-		set name=#{name}, phone=#{phone}, email=#{email}
+		set name=#{name}, phone=#{phone}, email=#{email}, updated_date = now()
 		where id=#{id}
 	</update>
 	<!-- 유저 타입 변경 -->
 	<update id="changeType" parameterType="map">
 		update members
-		set type = #{type, typeHandler=com.sonhaenono.member.type.EnumMemberTypeHandler}
+		set type = #{type}, updated_date = now()
 		where id=#{id}
 	</update>
 </mapper>
