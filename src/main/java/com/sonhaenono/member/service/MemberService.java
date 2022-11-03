@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.sonhaenono.member.MemberDto;
+import com.sonhaenono.member.MemberType;
 
 
 public interface MemberService {
@@ -48,5 +49,35 @@ public interface MemberService {
 	 * @return
 	 * @throws Exception
 	 */
-	public String findPassword(String id, String name, String phone) throws Exception; 
+	public String findPassword(String id, String name, String phone) throws Exception;
+	/**
+	 * 비밀번호 변경하기
+	 * @param id
+	 * @param oldPassword
+	 * @param newPassword
+	 * @return
+	 * @throws Exception
+	 */
+	public String changePassword(String id, String oldPassword, String newPassword) throws Exception;
+	/**
+	 * 유저 정보 변경하기
+	 * @param id
+	 * @param map 
+	 * {
+	 * 	 name: String,
+	 * 	 phone: String,
+	 *   email: String
+	 * }
+	 * @return
+	 * @throws Exception
+	 */
+	public String changeInfo(String id, Map<String, String> map) throws Exception;
+	/**
+	 * 유저 타입을 변경합니다.
+	 * @param id
+	 * @param type
+	 * @return
+	 * @throws Exception
+	 */
+	public String changeType(String id, MemberType type) throws Exception;
 }

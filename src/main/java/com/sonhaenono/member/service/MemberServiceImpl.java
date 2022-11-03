@@ -8,9 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sonhaenono.member.MemberDto;
+import com.sonhaenono.member.MemberType;
 import com.sonhaenono.member.mapper.MemberMapper;
-
-import lombok.RequiredArgsConstructor;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -53,6 +52,32 @@ public class MemberServiceImpl implements MemberService {
 		query.put("phone", phone);
 		
 		return memberMapper.findPassword(query);
+	}
+
+	@Override
+	public String changePassword(String id, String oldPassword, String newPassword) throws Exception {
+		Map<String, String> query = new HashMap<String, String>();
+		
+		query.put("id", id);
+		query.put("old_password", oldPassword);
+		query.put("new_password", newPassword);
+		
+		return memberMapper.changePassword(query);
+	}
+
+	@Override
+	public String changeInfo(String id, Map<String, String> map) throws Exception {
+		map.put("id", id);
+		return memberMapper.changeInfo(map);
+	}
+
+	@Override
+	public String changeType(String id, MemberType type) throws Exception {
+		Map<String, Object> query = new HashMap(); 
+		query.put("id", id);
+		query.put("type", type);
+		
+		return memberMapper.changeType(query);
 	}
 
 	

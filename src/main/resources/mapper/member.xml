@@ -4,7 +4,6 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sonhaenono.member.mapper.MemberMapper">
 
-
 	<resultMap type="memberDto" id="member_full">
 		<id column="id" property="id" />
 		<result column="password" property="password" />
@@ -52,15 +51,48 @@
 	</select>
 	
 	<!-- 비밀번호 찾기 -->
-	<parameterMap type="map" id="findPasswordQuery">
+	<!-- <parameterMap type="map" id="findPasswordQuery">
 		<parameter property="id" />
 		<parameter property="name" />
 		<parameter property="phone" />
 	</parameterMap>
-	
-	<select id="findPassword" parameterMap="findPasswordQuery" resultType="string">
+	 -->
+	<select id="findPassword" parameterType="map" resultType="string">
 		select password
 		from members
 		where id=#{id} and name=#{name} and phone=#{phone}
 	</select>
+	
+	<!-- 비밀번호 변경 -->
+	<!-- <parameterMap type="map" id="changePasswordQuery">
+		<parameter property="id" />
+		<parameter property="old_password" />
+		<parameter property="new_password" />
+	</parameterMap>
+	 -->
+	<update id="changePassword" parameterType="map">
+		update members 
+		set password = #{new_password}
+		where id=#{id} and password=#{old_password}
+	</update>
+	
+	<!-- 유저 정보 변경 -->
+	<!-- <parameterMap type="map" id="chageInfo">
+		<parameter property="id" />
+		<parameter property="name" />
+		<parameter property="phone" />
+		<parameter property="email" />
+	</parameterMap>
+	 -->
+	<update id="changeInfo" parameterType="map">
+		update members
+		set name=#{name}, phone=#{phone}, email=#{email}
+		where id=#{id}
+	</update>
+	<!-- 유저 타입 변경 -->
+	<update id="changeType" parameterType="map">
+		update members
+		set type = #{type, typeHandler=com.sonhaenono.member.type.EnumMemberTypeHandler}
+		where id=#{id}
+	</update>
 </mapper>
