@@ -75,7 +75,7 @@
 	 -->
 	<update id="changePassword" parameterType="map">
 		update members 
-		set password = #{new_password}, updated_date = now()
+		set password = #{new_password}
 		where id=#{id} and password=#{old_password}
 	</update>
 	
@@ -89,13 +89,13 @@
 	 -->
 	<update id="changeInfo" parameterType="map">
 		update members
-		set name=#{name}, phone=#{phone}, email=#{email}, updated_date = now()
+		set name=#{name}, phone=#{phone}, email=#{email}
 		where id=#{id}
 	</update>
 	<!-- 유저 타입 변경 -->
 	<update id="changeType" parameterType="map">
 		update members
-		set type = #{type}, updated_date = now()
+		set type = #{type}
 		where id=#{id}
 	</update>
 </mapper>
