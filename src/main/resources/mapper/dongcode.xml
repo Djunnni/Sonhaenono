@@ -9,19 +9,21 @@
 			<if test="type == 'sido'">
 				dongCode like RPAD('__' ,10 , '0')
 			</if>
-			<if test="type == 'gugun'">
-				dongCode like RPAD(
-					CONCAT(SUBSTRING(#{code},'1','2'), '___'),
-					10,
-					'0'
-				) and gugunName is not null
-			</if>
-			<if test="type == 'dong'">
-				dongCode like RPAD(
-					CONCAT(SUBSTRING(#{code},'1','5'), '___'),
-					10,
-					'0'
-				) and dongName is not null
+			<if test="code != null">
+				<if test="type == 'gugun'">
+					dongCode like RPAD(
+						CONCAT(SUBSTRING(#{code},'1','2'), '___'),
+						10,
+						'0'
+					) and gugunName is not null
+				</if>
+				<if test="type == 'dong'">
+					dongCode like RPAD(
+						CONCAT(SUBSTRING(#{code},'1','5'), '___'),
+						10,
+						'0'
+					) and dongName is not null
+				</if>
 			</if>
 		</where>
 	</sql>

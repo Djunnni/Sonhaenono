@@ -23,7 +23,10 @@ public class DongCodeRestController {
 	DongCodeService dongCodeService;
 	
 	@GetMapping()
-	public ResponseEntity<?> getCode(@RequestParam String type, @RequestParam String code) {
+	public ResponseEntity<?> getCode(
+			@RequestParam(required = true, value = "type") String type,
+			@RequestParam(required = false) String code
+	) {
 		try {
 			Map<String, String> map = new HashMap<>();
 			map.put("type", type);
