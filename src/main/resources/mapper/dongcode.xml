@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sonhaenono.dongcode.mapper.DongCodeMapper">
+	
+	<sql id="dongCodeSearchQuery">
+		<where>
+			<if test="type == 'sido'">
+				dongCode like RPAD('__' ,10 , '0')
+			</if>
+			<if test="type == 'gugun'">
+				dongCode like RPAD(
+					CONCAT(SUBSTRING(#{code},'1','2'), '___'),
+					10,
+					'0'
+				) and gugunName is not null
+			</if>
+			<if test="type == 'dong'">
+				dongCode like RPAD(
+					CONCAT(SUBSTRING(#{code},'1','5'), '___'),
+					10,
+					'0'
+				) and dongName is not null
+			</if>
+		</where>
+	</sql>
+	<select id="getDongCode" parameterType="map" resultType="dongCode">
+		select dongCode, sidoName, gugunName, dongName
+		from dongcode
+		<include refid="dongCodeSearchQuery"></include>
+	</select>
+</mapper>
