@@ -1,4 +1,4 @@
-package com.sonhaenono.dongcode;
+package com.sonhaenono.dongcode.model;
 
 public class DongCode {
 	private String dongCode;

@@ -6,8 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sonhaenono.dongcode.DongCode;
 import com.sonhaenono.dongcode.mapper.DongCodeMapper;
+import com.sonhaenono.dongcode.model.DongCode;
 
 @Service
 public class DongCodeServiceImpl implements DongCodeService {

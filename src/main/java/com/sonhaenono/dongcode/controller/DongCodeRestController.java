@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sonhaenono.dongcode.DongCode;
+import com.sonhaenono.dongcode.model.DongCode;
 import com.sonhaenono.dongcode.service.DongCodeService;
 
 @RestController

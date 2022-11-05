@@ -3,8 +3,8 @@ package com.sonhaenono.member.service;
 import java.util.List;
 import java.util.Map;
 
-import com.sonhaenono.member.MemberDto;
-import com.sonhaenono.member.MemberType;
+import com.sonhaenono.member.model.MemberDto;
+import com.sonhaenono.member.model.MemberType;
 
 
 public interface MemberService {

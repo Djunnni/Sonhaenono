@@ -1,4 +1,4 @@
-package com.sonhaenono.member;
+package com.sonhaenono.member.model;
 
 import com.sonhaenono.exception.MemberTypeException;
 

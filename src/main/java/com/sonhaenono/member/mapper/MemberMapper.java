@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.sonhaenono.member.MemberDto;
+import com.sonhaenono.member.model.MemberDto;
 
 @Mapper
 public interface MemberMapper {

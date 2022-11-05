@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.sonhaenono.dongcode.DongCode;
+import com.sonhaenono.dongcode.model.DongCode;
 
 @Mapper
 public interface DongCodeMapper {

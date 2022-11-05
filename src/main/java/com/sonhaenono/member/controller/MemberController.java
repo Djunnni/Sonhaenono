@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.sonhaenono.member.MemberDto;
+import com.sonhaenono.member.model.MemberDto;
 import com.sonhaenono.member.service.MemberService;
 
 @Controller

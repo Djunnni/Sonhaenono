@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sonhaenono.exception.MemberTypeException;
-import com.sonhaenono.member.MemberDto;
-import com.sonhaenono.member.MemberType;
+import com.sonhaenono.member.model.MemberDto;
+import com.sonhaenono.member.model.MemberType;
 import com.sonhaenono.member.service.MemberService;
 
 @RestController

@@ -10,7 +10,7 @@ import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;
 import org.apache.ibatis.type.TypeException;
 
-import com.sonhaenono.member.MemberType;
+import com.sonhaenono.member.model.MemberType;
 
 @MappedTypes(MemberType.class)
 public class EnumMemberTypeHandler<E extends Enum<E>> extends BaseTypeHandler<MemberType> {

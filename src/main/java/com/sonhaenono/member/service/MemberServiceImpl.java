@@ -7,9 +7,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sonhaenono.member.MemberDto;
-import com.sonhaenono.member.MemberType;
 import com.sonhaenono.member.mapper.MemberMapper;
+import com.sonhaenono.member.model.MemberDto;
+import com.sonhaenono.member.model.MemberType;
 
 @Service
 public class MemberServiceImpl implements MemberService {
