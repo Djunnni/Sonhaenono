@@ -1,7 +1,5 @@
 package com.sonhaenono.member.model;
 
-import com.sonhaenono.exception.MemberTypeException;
-
 public enum MemberType {
 	USER("U"), ADMIN("A");
 	
@@ -18,7 +16,7 @@ public enum MemberType {
 		} else if("A".equals(str)) {
 			return ADMIN;
 		} else {
-			throw new MemberTypeException("MEMBER_TYPE_NOT_EXIST");
+			return null;
 		}
 	}
 }

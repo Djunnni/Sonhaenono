@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sonhaenono.exception.MemberTypeException;
+import com.sonhaenono.exception.ApiException;
+import com.sonhaenono.exception.ExceptionEnum;
 import com.sonhaenono.member.model.MemberDto;
 import com.sonhaenono.member.model.MemberType;
 import com.sonhaenono.member.service.MemberService;
@@ -38,8 +39,9 @@ public class MemberRestController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getMember(@PathVariable("id") String id) {
+	public ResponseEntity<?> getMember(@PathVariable(value = "id", required = true) String id) {
 		try {
+			
 			MemberDto member = memberService.getMemberById(id);
 			if(member == null) {
 				return new ResponseEntity<Object>(null, HttpStatus.NO_CONTENT);
@@ -67,12 +69,13 @@ public class MemberRestController {
 	@PutMapping("/{id}/type")
 	public ResponseEntity<?> changeType(@PathVariable("id") String id, @RequestBody String type) {
 		try {
+			MemberType parsedType = MemberType.parse(type);
+			if(parsedType == null) {
+				throw new ApiException(ExceptionEnum.MEMBER_TYPE_EXCEPTION);
+			}
 			memberService.changeType(id, MemberType.parse(type));
 			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 		} catch(Exception e) {
-			if(e instanceof MemberTypeException) {
-				return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
-			}
 			e.printStackTrace();
 			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
