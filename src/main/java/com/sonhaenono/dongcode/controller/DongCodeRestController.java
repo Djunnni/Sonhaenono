@@ -29,8 +29,8 @@ public class DongCodeRestController {
 			@RequestParam(required = true, defaultValue = "") String type,
 			@RequestParam(required = false, defaultValue = "") String code
 	) throws Exception {
-		// 타입이 시/도가 아닐경우, code가 비어있으면 파라미터 요청 에러를 반환
-		if(!"sido".equals(type) && "".equals(code)) {
+		// [1] 타입이 없을 경우,[2] 타입이 시/도가 아닐 때, code가 비어있으면 파라미터 요청 에러를 반환
+		if(("".equals(type)) || (!"sido".equals(type) && "".equals(code))) {
 			throw new ApiException(ExceptionEnum.DONGCODE_PARAMETER_EXCEPTION);
 		}
 		Map<String, String> map = new HashMap<>();
