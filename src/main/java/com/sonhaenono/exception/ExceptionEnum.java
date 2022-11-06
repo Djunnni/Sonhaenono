@@ -8,6 +8,8 @@ public enum ExceptionEnum {
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "E0003"),
 	API_NOT_EXIST_EXCEPTION(HttpStatus.NOT_FOUND, "E0004", "존재하지 않는 API 입니다."),
 	
+	DONGCODE_PARAMETER_EXCEPTION(HttpStatus.BAD_REQUEST, "D0001", "필수 파라미터를 넣어주세요."),
+	
 	MEMBER_ACCESS_EXCEPTION(HttpStatus.FORBIDDEN, "M0001", "접근 권한이 없습니다."),
 	MEMBER_TYPE_EXCEPTION(HttpStatus.BAD_REQUEST, "M0010", "존재하지 않는 멤버 타입입니다.");
 	

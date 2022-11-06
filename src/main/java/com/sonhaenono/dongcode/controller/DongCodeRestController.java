@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sonhaenono.dongcode.model.DongCode;
 import com.sonhaenono.dongcode.service.DongCodeService;
+import com.sonhaenono.exception.ApiException;
+import com.sonhaenono.exception.ExceptionEnum;
 
 @RestController
 @RequestMapping("/api/dongcode")
@@ -24,21 +26,20 @@ public class DongCodeRestController {
 	
 	@GetMapping()
 	public ResponseEntity<?> getCode(
-			@RequestParam(required = true, value = "type") String type,
-			@RequestParam(required = false) String code
-	) {
-		try {
-			Map<String, String> map = new HashMap<>();
-			map.put("type", type);
-			map.put("code", code);
-			
-			List<DongCode> list = dongCodeService.getDongCode(map);
-			
-			return new ResponseEntity<List<DongCode>>(list, HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+			@RequestParam(required = true, defaultValue = "") String type,
+			@RequestParam(required = false, defaultValue = "") String code
+	) throws Exception {
+		// 타입이 시/도가 아닐경우, code가 비어있으면 파라미터 요청 에러를 반환
+		if(!"sido".equals(type) && "".equals(code)) {
+			throw new ApiException(ExceptionEnum.DONGCODE_PARAMETER_EXCEPTION);
 		}
+		Map<String, String> map = new HashMap<>();
+		map.put("type", type);
+		map.put("code", code);
+		
+		List<DongCode> list = dongCodeService.getDongCode(map);
+		
+		return new ResponseEntity<List<DongCode>>(list, HttpStatus.OK);
 	}
 	
 }
