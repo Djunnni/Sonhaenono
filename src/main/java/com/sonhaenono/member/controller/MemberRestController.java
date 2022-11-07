@@ -17,7 +17,7 @@ import com.sonhaenono.exception.ApiException;
 import com.sonhaenono.exception.ExceptionEnum;
 import com.sonhaenono.member.model.MemberDto;
 import com.sonhaenono.member.model.MemberType;
-import com.sonhaenono.member.service.MemberService;
+import com.sonhaenono.member.service.MemberService;import net.bytebuddy.description.modifier.EnumerationState;
 
 @RestController
 @RequestMapping("/api/member")
@@ -28,73 +28,49 @@ public class MemberRestController {
 	
 
 	@GetMapping()
-	public ResponseEntity<?> getMembers() {
-		try {
-			List<MemberDto> members = memberService.getMembers(null);
-			return new ResponseEntity<List<MemberDto>>(members, HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+	public ResponseEntity<?> getMembers() throws Exception {
+		List<MemberDto> members = memberService.getMembers(null);
+		return new ResponseEntity<List<MemberDto>>(members, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getMember(@PathVariable(value = "id", required = true) String id) {
-		try {
-			
-			MemberDto member = memberService.getMemberById(id);
-			if(member == null) {
-				return new ResponseEntity<Object>(null, HttpStatus.NO_CONTENT);
-			}
-			return new ResponseEntity<MemberDto>(member, HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+	public ResponseEntity<?> getMember(@PathVariable(value = "id", required = true) String id) throws Exception {
+		MemberDto member = memberService.getMemberById(id);
+		if(member == null) {
+			return new ResponseEntity<Object>(null, HttpStatus.NO_CONTENT);
 		}
+		return new ResponseEntity<MemberDto>(member, HttpStatus.OK);
 	}
 	
 	@GetMapping("/id/{memberId}")
-	public ResponseEntity<?> existMember(@PathVariable("memberId") String id) {
-		try {
-			int exist = memberService.existMemberId(id);
-			
-			boolean answer = exist > 0;
-			return new ResponseEntity<Boolean>(answer, HttpStatus.OK);
-		} catch(Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+	public ResponseEntity<?> existMember(@PathVariable("memberId") String id) throws Exception {
+		int exist = memberService.existMemberId(id);
+		
+		boolean answer = exist > 0;
+		return new ResponseEntity<Boolean>(answer, HttpStatus.OK);
 	}
 	
 	@PutMapping("/{id}/type")
-	public ResponseEntity<?> changeType(@PathVariable("id") String id, @RequestBody String type) {
-		try {
-			MemberType parsedType = MemberType.parse(type);
-			if(parsedType == null) {
-				throw new ApiException(ExceptionEnum.MEMBER_TYPE_EXCEPTION);
-			}
-			memberService.changeType(id, MemberType.parse(type));
-			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
-		} catch(Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+	public ResponseEntity<?> changeType(@PathVariable("id") String id, @RequestBody String type) throws Exception {
+		MemberType parsedType = MemberType.parse(type);
+		if(parsedType == null) {
+			throw new ApiException(ExceptionEnum.MEMBER_TYPE_EXCEPTION);
 		}
+		memberService.changeType(id, MemberType.parse(type));
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
 	@PutMapping("/{id}/password")
-	public ResponseEntity<?> changePassword(@PathVariable("id") String id, @RequestBody Map<String, String> map) {
-		try {
+	public ResponseEntity<?> changePassword(@PathVariable("id") String id, @RequestBody Map<String, String> map) throws Exception {
 			String oldPassword = map.get("password");
 			String newPassword = map.get("new_password");
+			if(newPassword.equals(oldPassword)) {
+				throw new ApiException(ExceptionEnum.MEMBER_PASSWORD_EXCEPTION);
+			}
 			if(memberService.changePassword(id, oldPassword, newPassword)) {
 				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 			}
 			
-			return new ResponseEntity<Boolean>(false, HttpStatus.OK);
-		} catch(Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+			throw new ApiException(ExceptionEnum.MEMBER_PASSWORD_EXCEPTION);
 	}
-	
 }

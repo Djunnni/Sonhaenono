@@ -3,6 +3,7 @@ package com.sonhaenono.config;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -43,9 +44,10 @@ public class ApiExceptionAdvice {
 	 * @return
 	 */
 	@ExceptionHandler({NoHandlerFoundException.class})
-	public ResponseEntity<ApiExceptionEntity> notFoundExceptionHandler(NoHandlerFoundException exception) {
-		ApiException e = new ApiException(ExceptionEnum.API_NOT_EXIST_EXCEPTION);
+	public ResponseEntity<ApiExceptionEntity> notFoundExceptionHandler(final NoHandlerFoundException exception) {
+		exception.printStackTrace();
 		
+		ApiException e = new ApiException(ExceptionEnum.API_NOT_EXIST_EXCEPTION);
 		return new ResponseEntity<ApiExceptionEntity>(
 				new ApiExceptionEntity(
 						e.getError().getStatus(),
@@ -56,4 +58,64 @@ public class ApiExceptionAdvice {
 			);
 	}
 	
+	/**
+	 * 런타임 예외에 대한 처리입니다.
+	 * @param request
+	 * @param exception
+	 * @return
+	 */
+	@ExceptionHandler({RuntimeException.class})
+	public ResponseEntity<ApiExceptionEntity> runTimeExceptionHanlder(HttpServletRequest request, final RuntimeException exception) {
+		exception.printStackTrace();
+		
+		ApiException e = new ApiException(ExceptionEnum.RUNTIME_EXCEPTION);
+		return new ResponseEntity<ApiExceptionEntity>(
+				new ApiExceptionEntity(
+						e.getError().getStatus(),
+						e.getError().getCode(),
+						e.getError().getMessage()
+					),
+				e.getError().getStatus()
+			);
+	}
+	/**
+	 * 경로는 있으나 메서드가 다를 경우 405 예외를 리턴합니다.
+	 * @param request
+	 * @param exception
+	 * @return
+	 */
+	@ExceptionHandler({HttpRequestMethodNotSupportedException.class})
+	public ResponseEntity<ApiExceptionEntity> runTimeExceptionHanlder(HttpServletRequest request, final HttpRequestMethodNotSupportedException exception) {
+		exception.printStackTrace();
+		
+		ApiException e = new ApiException(ExceptionEnum.API_METHOD_NOT_ALLOWED_EXCEPTION);
+		return new ResponseEntity<ApiExceptionEntity>(
+				new ApiExceptionEntity(
+						e.getError().getStatus(),
+						e.getError().getCode(),
+						e.getError().getMessage()
+					),
+				e.getError().getStatus()
+			);
+	}
+	/**
+	 * 전체 예외에 대한 기본 처리입니다.
+	 * @param request
+	 * @param exception
+	 * @return
+	 */
+	@ExceptionHandler({Exception.class})
+	public ResponseEntity<ApiExceptionEntity> exceptionHandler(HttpServletRequest request, final Exception exception) {
+		exception.printStackTrace();
+		
+		ApiException e = new ApiException(ExceptionEnum.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<ApiExceptionEntity>(
+				new ApiExceptionEntity(
+						e.getError().getStatus(),
+						e.getError().getCode(),
+						e.getError().getMessage()
+					),
+				e.getError().getStatus()
+			);
+	}
 }
