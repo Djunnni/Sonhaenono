@@ -17,8 +17,12 @@ import com.sonhaenono.dongcode.service.DongCodeService;
 import com.sonhaenono.exception.ApiException;
 import com.sonhaenono.exception.ExceptionEnum;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/api/dongcode")
@@ -27,12 +31,25 @@ public class DongCodeRestController {
 	@Autowired
 	DongCodeService dongCodeService;
 	
-	@Operation(summary = "동코드 조회하기", description = "시/도/구/군/동 코드를 조회합니다.")
-	@ApiResponse(code = 200, message = "정상 동작")
+	@ApiOperation(
+			notes = "type과 code를 전달받아 시/도/군구/동 정보를 조회합니다.",
+			value ="시/도/군구/동 조회"
+	)
+	@ApiResponses({
+		@ApiResponse(
+				code = 200,
+				message = "성공",
+				response = DongCode.class
+		),
+		@ApiResponse(
+				code = 400,
+				message = "필수 파라미터 입력 요망"
+		),
+	})
 	@GetMapping()
 	public ResponseEntity<?> getCode(
-			@RequestParam(required = true, defaultValue = "") String type,
-			@RequestParam(required = false, defaultValue = "") String code
+			@ApiParam(value = "sido: 시/도, gugun: 구/군, dong: 동", required = true, example = "sido") @RequestParam(required = true, defaultValue = "") String type,
+			@ApiParam(value = "dongCode: 동코드", required = false, example = "") @RequestParam(required = false, defaultValue = "") String code
 	) throws Exception {
 		// [1] 타입이 없을 경우,[2] 타입이 시/도가 아닐 때, code가 비어있으면 파라미터 요청 에러를 반환
 		if(("".equals(type)) || (!"sido".equals(type) && "".equals(code))) {

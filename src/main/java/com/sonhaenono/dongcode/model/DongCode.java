@@ -1,9 +1,17 @@
 package com.sonhaenono.dongcode.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(description = "동코드")
 public class DongCode {
+	@ApiModelProperty(example = "1117010400")
 	private String dongCode;
+	@ApiModelProperty(example = "서울특별시")
 	private String sidoName;
+	@ApiModelProperty(example = "용산구")
 	private String gugunName;
+	@ApiModelProperty(example = "갈월동")
 	private String dongName;
 	
 	public String getDongCode() {
