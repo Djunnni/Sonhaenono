@@ -17,6 +17,9 @@ import com.sonhaenono.dongcode.service.DongCodeService;
 import com.sonhaenono.exception.ApiException;
 import com.sonhaenono.exception.ExceptionEnum;
 
+import io.swagger.annotations.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 @RequestMapping("/api/dongcode")
 public class DongCodeRestController {
@@ -24,6 +27,8 @@ public class DongCodeRestController {
 	@Autowired
 	DongCodeService dongCodeService;
 	
+	@Operation(summary = "동코드 조회하기", description = "시/도/구/군/동 코드를 조회합니다.")
+	@ApiResponse(code = 200, message = "정상 동작")
 	@GetMapping()
 	public ResponseEntity<?> getCode(
 			@RequestParam(required = true, defaultValue = "") String type,
