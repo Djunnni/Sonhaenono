@@ -11,9 +11,9 @@ public enum MemberType {
 		return type;
 	}
 	public static MemberType parse(String str) throws Exception {
-		if("U".equals(str)) {
+		if("U".equals(str) || "USER".equals(str)) {
 			return USER;
-		} else if("A".equals(str)) {
+		} else if("A".equals(str) || "ADMIN".equals(str)) {
 			return ADMIN;
 		} else {
 			return null;
