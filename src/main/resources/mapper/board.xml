@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sonhaenono.board.mapper.BoardMapper">
+	<resultMap type="boardDto" id="board_full">
+		<id column="no" property="no"/>
+		<result column="member_id" property="memberId"/>
+		<result column="subject" property="subject"/>
+		<result column="content" property="content"/>
+		<result column="hit" property="hit"/>
+		<result column="created_at" property="createdAt"/>
+		<result column="updated_at" property="updatedAt"/>
+	</resultMap>
+	
+	<insert id="writeArticle" parameterType="boardDto">
+		insert into board
+		(member_id, subject, content)
+		values
+		(#{memberId}, #{subject}, #{content})	
+	</insert>
+	
+	<select id="getArticles" resultMap="board_full">
+		select * from board
+	</select>
+	
+	<select id="getArticle" parameterType="int" resultType="boardDto">
+		select * from board where no = #{no}
+	</select>
+	
+	<delete id="deleteArticle" parameterType="int">
+		delete from board where no = #{no}
+	</delete>
+	
+	<select id="existArticle" parameterType="int" resultType="int">
+		select count(no) from board where no = #{no}
+	</select>
+</mapper>

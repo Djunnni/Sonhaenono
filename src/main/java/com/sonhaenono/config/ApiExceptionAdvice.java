@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -109,6 +110,20 @@ public class ApiExceptionAdvice {
 		exception.printStackTrace();
 		
 		ApiException e = new ApiException(ExceptionEnum.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<ApiExceptionEntity>(
+				new ApiExceptionEntity(
+						e.getError().getStatus(),
+						e.getError().getCode(),
+						e.getError().getMessage()
+					),
+				e.getError().getStatus()
+			);
+	}
+	@ExceptionHandler({MethodArgumentNotValidException.class})
+	public ResponseEntity<ApiExceptionEntity> exception(HttpServletRequest request, final MethodArgumentNotValidException exception) {
+		exception.printStackTrace();
+		
+		ApiException e = new ApiException(ExceptionEnum.API_PARAMETER_EXCEPTION);
 		return new ResponseEntity<ApiExceptionEntity>(
 				new ApiExceptionEntity(
 						e.getError().getStatus(),
