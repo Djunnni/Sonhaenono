@@ -76,6 +76,14 @@ public class MemberRestController {
 		memberService.changeType(id, MemberType.parse(type));
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
+	@PutMapping("/{id}/info")
+	public ResponseEntity<?> changeInfo(@PathVariable("id") String id, @RequestBody Map<String, String> map) throws Exception {
+		if(!memberService.existMemberId(id)) {
+			throw new ApiException(ExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION);
+		}
+		memberService.changeInfo(id, map);
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+	}
 	
 	@GetMapping("/password/{memberId}")
 	public ResponseEntity<?> getPassword(@PathVariable(name = "memberId", required = true) String id, @RequestParam(name = "name", required = true) String name, @RequestParam(name = "phone", required = true) String phone) throws Exception {

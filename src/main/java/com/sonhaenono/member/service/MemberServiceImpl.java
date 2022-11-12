@@ -72,7 +72,7 @@ public class MemberServiceImpl implements MemberService {
 		map.put("id", id);
 		return memberMapper.changeInfo(map) == 1;
 	}
-
+	
 	@Override
 	public boolean changeType(String id, MemberType type) throws Exception {
 		Map<String, String> query = new HashMap(); 
@@ -81,7 +81,5 @@ public class MemberServiceImpl implements MemberService {
 		
 		return memberMapper.changeType(query) == 1;
 	}
-
-	
 	
 }
