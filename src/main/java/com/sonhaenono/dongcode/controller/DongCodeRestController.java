@@ -53,7 +53,7 @@ public class DongCodeRestController {
 	) throws Exception {
 		// [1] 타입이 없을 경우,[2] 타입이 시/도가 아닐 때, code가 비어있으면 파라미터 요청 에러를 반환
 		if(("".equals(type)) || (!"sido".equals(type) && "".equals(code))) {
-			throw new ApiException(ExceptionEnum.DONGCODE_PARAMETER_EXCEPTION);
+			throw new ApiException(ExceptionEnum.API_PARAMETER_EXCEPTION);
 		}
 		Map<String, String> map = new HashMap<>();
 		map.put("type", type);
