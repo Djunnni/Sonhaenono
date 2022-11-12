@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sonhaenono.member.mapper.MemberMapper;
 import com.sonhaenono.member.model.MemberDto;
@@ -39,8 +40,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int existMemberId(String id) throws Exception {
-		return memberMapper.existMemberId(id);
+	public boolean existMemberId(String id) throws Exception {
+		return memberMapper.existMemberId(id) > 0;
 	}
 
 	@Override
@@ -55,6 +56,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	@Transactional
 	public boolean changePassword(String id, String oldPassword, String newPassword) throws Exception {
 		Map<String, String> query = new HashMap<String, String>();
 		

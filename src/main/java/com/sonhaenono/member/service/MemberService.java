@@ -40,7 +40,7 @@ public interface MemberService {
 	 * @return
 	 * @throws Exception
 	 */
-	public int existMemberId(String id) throws Exception;
+	public boolean existMemberId(String id) throws Exception;
 	/**
 	 * 비밀번호 찾기
 	 * @param id

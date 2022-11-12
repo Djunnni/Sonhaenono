@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +24,7 @@ import com.sonhaenono.exception.ApiException;
 import com.sonhaenono.exception.ExceptionEnum;
 import com.sonhaenono.member.model.MemberDto;
 import com.sonhaenono.member.model.MemberType;
-import com.sonhaenono.member.service.MemberService;import net.bytebuddy.description.modifier.EnumerationState;
+import com.sonhaenono.member.service.MemberService;
 
 @RestController
 @RequestMapping("/api/member")
@@ -37,6 +39,16 @@ public class MemberRestController {
 		return new ResponseEntity<List<MemberDto>>(members, HttpStatus.OK);
 	}
 	
+	@PostMapping
+	public ResponseEntity<?> createMembers(@RequestBody @Valid MemberDto member) throws Exception {
+		if(memberService.existMemberId(member.getId())) {
+			throw new ApiException(ExceptionEnum.MEMBER_EXIST_EXCEPTION);
+		}
+		
+		memberService.joinMember(member);
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+	}
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getMember(@PathVariable(value = "id", required = true) String id) throws Exception {
 		MemberDto member = memberService.getMemberById(id);
@@ -48,10 +60,8 @@ public class MemberRestController {
 	
 	@GetMapping("/id/{memberId}")
 	public ResponseEntity<?> existMember(@PathVariable("memberId") String id) throws Exception {
-		int exist = memberService.existMemberId(id);
-		
-		boolean answer = exist > 0;
-		return new ResponseEntity<Boolean>(answer, HttpStatus.OK);
+		boolean exist = memberService.existMemberId(id);
+		return new ResponseEntity<Boolean>(exist, HttpStatus.OK);
 	}
 	
 	@PutMapping("/{id}/type")
@@ -60,8 +70,20 @@ public class MemberRestController {
 		if(parsedType == null) {
 			throw new ApiException(ExceptionEnum.MEMBER_TYPE_EXCEPTION);
 		}
+		if(!memberService.existMemberId(id)) {
+			throw new ApiException(ExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION);
+		}
 		memberService.changeType(id, MemberType.parse(type));
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+	}
+	
+	@GetMapping("/password/{memberId}")
+	public ResponseEntity<?> getPassword(@PathVariable(name = "memberId", required = true) String id, @RequestParam(name = "name", required = true) String name, @RequestParam(name = "phone", required = true) String phone) throws Exception {
+		if(!memberService.existMemberId(id)) {
+			throw new ApiException(ExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION);
+		}
+		String pw = memberService.findPassword(id, name, phone);
+		return new ResponseEntity<String>(pw, HttpStatus.OK);
 	}
 	
 	@PutMapping("/{id}/password")

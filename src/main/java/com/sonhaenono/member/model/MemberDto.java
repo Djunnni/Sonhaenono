@@ -3,6 +3,8 @@ package com.sonhaenono.member.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -11,13 +13,13 @@ import javax.validation.constraints.Size;
 @SuppressWarnings("serial")
 public class MemberDto implements Serializable {
 	
-	@NotNull
+	@NotBlank
 	@Size(min = 5, max = 20)
 	@Pattern(regexp = "[0-9a-z_-]+")
 	private String id; // 아이디
 	
 	@Size(min = 8, max = 16)
-	@Pattern(regexp = " ^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$")
+	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$")
 	private String password; // 비밀번호
 	
 	@Size(max = 40)
@@ -31,6 +33,7 @@ public class MemberDto implements Serializable {
 	@Pattern(regexp="[0-9]+")
 	private String phone; // 전화번호
 	
+	@Email
 	@Size(max = 100)
 	private String email; // 이메일
 	
