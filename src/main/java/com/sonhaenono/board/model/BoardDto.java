@@ -3,14 +3,14 @@ package com.sonhaenono.board.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @SuppressWarnings("serial")
 public class BoardDto implements Serializable {
 	private int no;
 	private String memberId;
-	@NotNull
+	@NotBlank
 	@Size(min = 1, max = 100)
 	private String subject;
 	@Size(min = 0, max = 2000)
@@ -25,9 +25,9 @@ public class BoardDto implements Serializable {
 				+ hit + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
 	}
 
+	public BoardDto() {}
 	public BoardDto(int no, String memberId, String subject, String content, int hit, LocalDateTime createdAt,
 			LocalDateTime updatedAt) {
-		super();
 		this.no = no;
 		this.memberId = memberId;
 		this.subject = subject;

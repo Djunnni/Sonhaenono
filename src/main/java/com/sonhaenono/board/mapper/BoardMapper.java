@@ -15,4 +15,5 @@ public interface BoardMapper {
 	void deleteArticle(int no) throws SQLException;
 	int existArticle(int no) throws SQLException;
 	void updateArticle(BoardDto board) throws SQLException;
+	void updateHit(int no) throws SQLException;
 }

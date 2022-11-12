@@ -35,4 +35,16 @@
 	<select id="existArticle" parameterType="int" resultType="int">
 		select count(no) from board where no = #{no}
 	</select>
+	
+	<update id="updateHit" parameterType="int">
+		update board
+		set hit = hit + 1
+		where no = #{no}
+	</update>
+	
+	<update id="updateArticle" parameterType="boardDto">
+		update board set
+		subject = #{subject}, content=#{content}
+		where no = #{no}
+	</update>
 </mapper>
