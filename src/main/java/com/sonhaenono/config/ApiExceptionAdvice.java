@@ -46,7 +46,7 @@ public class ApiExceptionAdvice {
 	 */
 	@ExceptionHandler({NoHandlerFoundException.class})
 	public ResponseEntity<ApiExceptionEntity> notFoundExceptionHandler(final NoHandlerFoundException exception) {
-		exception.printStackTrace();
+		// exception.printStackTrace();
 		
 		ApiException e = new ApiException(ExceptionEnum.API_NOT_EXIST_EXCEPTION);
 		return new ResponseEntity<ApiExceptionEntity>(
@@ -87,7 +87,7 @@ public class ApiExceptionAdvice {
 	 */
 	@ExceptionHandler({HttpRequestMethodNotSupportedException.class})
 	public ResponseEntity<ApiExceptionEntity> runTimeExceptionHanlder(HttpServletRequest request, final HttpRequestMethodNotSupportedException exception) {
-		exception.printStackTrace();
+		// exception.printStackTrace();
 		
 		ApiException e = new ApiException(ExceptionEnum.API_METHOD_NOT_ALLOWED_EXCEPTION);
 		return new ResponseEntity<ApiExceptionEntity>(
@@ -121,7 +121,7 @@ public class ApiExceptionAdvice {
 	}
 	@ExceptionHandler({MethodArgumentNotValidException.class})
 	public ResponseEntity<ApiExceptionEntity> exception(HttpServletRequest request, final MethodArgumentNotValidException exception) {
-		exception.printStackTrace();
+		// exception.printStackTrace();
 		
 		ApiException e = new ApiException(ExceptionEnum.API_PARAMETER_EXCEPTION);
 		return new ResponseEntity<ApiExceptionEntity>(

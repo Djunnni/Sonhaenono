@@ -35,7 +35,6 @@ public class BoardRestController {
 	
 	@PostMapping
 	public ResponseEntity<?> writeArticle(@RequestBody @Valid BoardDto board) throws Exception {
-		logger.debug("게시글 생성요청 - {}", board);
 		// TODO: member 정보를 가져와서 board에 넣어주기
 		boardService.writeArticle(board);
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
@@ -61,7 +60,6 @@ public class BoardRestController {
 	@DeleteMapping("/{no}")
 	public ResponseEntity<?> deleteArticle(@PathVariable(name="no", required = true) int no) throws Exception {
 		// TODO: 권한이 있는 사용자인지 체크 필요
-		logger.debug("게시글 삭제 요청 - no: {}", no);
 		if(boardService.existArticle(no)) {
 			boardService.deleteArticle(no);
 			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
