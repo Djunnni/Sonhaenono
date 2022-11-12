@@ -83,6 +83,9 @@ public class MemberRestController {
 			throw new ApiException(ExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION);
 		}
 		String pw = memberService.findPassword(id, name, phone);
+		if(pw == null) {
+			throw new ApiException(ExceptionEnum.API_PARAMETER_EXCEPTION);
+		}
 		return new ResponseEntity<String>(pw, HttpStatus.OK);
 	}
 	
