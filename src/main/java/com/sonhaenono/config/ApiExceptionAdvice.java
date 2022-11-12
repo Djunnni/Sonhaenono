@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -27,7 +28,7 @@ public class ApiExceptionAdvice {
 	 * @return
 	 */
 	@ExceptionHandler({ApiException.class})
-	public ResponseEntity<ApiExceptionEntity> exceptionHandler(HttpServletRequest request, final ApiException e) {
+	public ResponseEntity<ApiExceptionEntity> apiExceptionHandler(HttpServletRequest request, final ApiException e) {
 		return new ResponseEntity<ApiExceptionEntity>(
 					new ApiExceptionEntity(
 							e.getError().getStatus(),
@@ -45,7 +46,7 @@ public class ApiExceptionAdvice {
 	 * @return
 	 */
 	@ExceptionHandler({NoHandlerFoundException.class})
-	public ResponseEntity<ApiExceptionEntity> notFoundExceptionHandler(final NoHandlerFoundException exception) {
+	public ResponseEntity<ApiExceptionEntity> notFoundExceptionHandler(final Exception exception) {
 		// exception.printStackTrace();
 		
 		ApiException e = new ApiException(ExceptionEnum.API_NOT_EXIST_EXCEPTION);
@@ -66,7 +67,7 @@ public class ApiExceptionAdvice {
 	 * @return
 	 */
 	@ExceptionHandler({RuntimeException.class})
-	public ResponseEntity<ApiExceptionEntity> runTimeExceptionHanlder(HttpServletRequest request, final RuntimeException exception) {
+	public ResponseEntity<ApiExceptionEntity> runTimeExceptionHanlder(HttpServletRequest request, final Exception exception) {
 		exception.printStackTrace();
 		
 		ApiException e = new ApiException(ExceptionEnum.RUNTIME_EXCEPTION);
@@ -86,7 +87,7 @@ public class ApiExceptionAdvice {
 	 * @return
 	 */
 	@ExceptionHandler({HttpRequestMethodNotSupportedException.class})
-	public ResponseEntity<ApiExceptionEntity> runTimeExceptionHanlder(HttpServletRequest request, final HttpRequestMethodNotSupportedException exception) {
+	public ResponseEntity<ApiExceptionEntity> methodNotSupportExceptionHandler(HttpServletRequest request, final Exception exception) {
 		// exception.printStackTrace();
 		
 		ApiException e = new ApiException(ExceptionEnum.API_METHOD_NOT_ALLOWED_EXCEPTION);
@@ -106,7 +107,7 @@ public class ApiExceptionAdvice {
 	 * @return
 	 */
 	@ExceptionHandler({Exception.class})
-	public ResponseEntity<ApiExceptionEntity> exceptionHandler(HttpServletRequest request, final Exception exception) {
+	public ResponseEntity<ApiExceptionEntity> internalServerExceptionHandler(HttpServletRequest request, final Exception exception) {
 		exception.printStackTrace();
 		
 		ApiException e = new ApiException(ExceptionEnum.INTERNAL_SERVER_ERROR);
@@ -119,8 +120,17 @@ public class ApiExceptionAdvice {
 				e.getError().getStatus()
 			);
 	}
-	@ExceptionHandler({MethodArgumentNotValidException.class})
-	public ResponseEntity<ApiExceptionEntity> exception(HttpServletRequest request, final MethodArgumentNotValidException exception) {
+	/**
+	 * 파라미터 검증에서 실패했을 경우 기본 처리입니다.
+	 * @param request
+	 * @param exception
+	 * @return
+	 */
+	@ExceptionHandler(value = {
+		MethodArgumentNotValidException.class,
+		MissingServletRequestParameterException.class
+	})
+	public ResponseEntity<ApiExceptionEntity> parameterException(HttpServletRequest request, final Exception exception) {
 		// exception.printStackTrace();
 		
 		ApiException e = new ApiException(ExceptionEnum.API_PARAMETER_EXCEPTION);
@@ -133,4 +143,6 @@ public class ApiExceptionAdvice {
 				e.getError().getStatus()
 			);
 	}
+	
+	
 }
