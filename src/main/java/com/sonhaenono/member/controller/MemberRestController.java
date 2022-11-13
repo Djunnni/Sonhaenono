@@ -3,6 +3,7 @@ package com.sonhaenono.member.controller;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -99,17 +100,44 @@ public class MemberRestController {
 	
 	@PutMapping("/{id}/password")
 	public ResponseEntity<?> changePassword(@PathVariable("id") String id, @RequestBody Map<String, String> map) throws Exception {
-			String oldPassword = map.get("password");
-			String newPassword = map.get("new_password");
-			if(newPassword.equals(oldPassword)) {
-				throw new ApiException(ExceptionEnum.MEMBER_PASSWORD_EXCEPTION);
-			}
-			if(memberService.changePassword(id, oldPassword, newPassword)) {
-				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
-			}
-			
+		String oldPassword = map.get("password");
+		String newPassword = map.get("new_password");
+		if(newPassword.equals(oldPassword)) {
 			throw new ApiException(ExceptionEnum.MEMBER_PASSWORD_EXCEPTION);
+		}
+		if(memberService.changePassword(id, oldPassword, newPassword)) {
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		}
+		
+		throw new ApiException(ExceptionEnum.MEMBER_PASSWORD_EXCEPTION);
 	}
+	
+	@PutMapping("/{id}/favorite-regions")
+	public ResponseEntity<?> addFavoriteRegions(@PathVariable("id") String id, @RequestBody Map<String,List<String>> map) throws Exception {
+		if(!memberService.existMemberId(id)) {
+			throw new ApiException(ExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION);
+		}
+		List<String> dongCodes = null;
+		try {
+			dongCodes = Objects.requireNonNull(map.get("regions"));
+		} catch(Exception e) {
+			throw new ApiException(ExceptionEnum.API_PARAMETER_EXCEPTION);
+		}
+		
+		memberService.setFavoriteRegions(id, dongCodes);
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+	}
+	
+	@GetMapping("/{id}/favorite-regions")
+	public ResponseEntity<?> getFavoriteRegions(@PathVariable("id") String id) throws Exception {
+		if(!memberService.existMemberId(id)) {
+			throw new ApiException(ExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION);
+		}
+		
+		List<String> regions = memberService.getFavoriteRegions(id);
+		return new ResponseEntity<List<String>>(regions, HttpStatus.OK);
+	}
+	
 	
 	@GetMapping("/login")
 	public String login(@Value("session.key") String key, @RequestParam Map<String,String> map, HttpSession session) throws Exception {

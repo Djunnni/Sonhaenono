@@ -98,4 +98,27 @@
 		set type = #{type}
 		where id=#{id}
 	</update>
+	
+	<!-- 유저 관심 지역 조회 -->
+	<select id="getFavoriteRegions" parameterType="string" resultType="string">
+		select dongCode
+		from member_favorite_region
+		where member_id= #{id}
+	</select>
+	
+	<!-- 유저 관심 지역 추가 -->
+	<insert id="addFavoriteRegions" parameterType="memberFavoriteRegion">
+		insert into member_favorite_region
+		(member_id, dongCode) values
+		<foreach collection="dongCodes" item="dongCode" separator=",">
+			(#{memberId}, #{dongCode})
+		</foreach>
+	</insert>
+	<!-- 유저 관심 지역 삭제 -->
+	<delete id="removeFavoriteRegions" parameterType="memberFavoriteRegion">
+		delete from member_favorite_region where member_id = #{memberId} and dongCode in 
+		<foreach collection="dongCodes" item="dongCode" separator="," open="(" close=")" >
+			#{dongCode}
+		</foreach>
+	</delete>
 </mapper>

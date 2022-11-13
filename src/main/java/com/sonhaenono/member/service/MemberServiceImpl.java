@@ -1,8 +1,12 @@
 package com.sonhaenono.member.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sonhaenono.member.mapper.MemberMapper;
 import com.sonhaenono.member.model.MemberDto;
+import com.sonhaenono.member.model.MemberFavoriteRegion;
 import com.sonhaenono.member.model.MemberType;
 
 @Service
@@ -80,6 +85,34 @@ public class MemberServiceImpl implements MemberService {
 		query.put("type", type.getType());
 		
 		return memberMapper.changeType(query) == 1;
+	}
+
+	@Override
+	public List<String> getFavoriteRegions(String id) throws Exception {
+		return memberMapper.getFavoriteRegions(id);
+	}
+
+	@Override
+	@Transactional
+	public void setFavoriteRegions(String id,  List<String> dongCodes) throws Exception {
+		List<String> originalList = memberMapper.getFavoriteRegions(id);
+		
+		Set<String> addSet = new HashSet<>(dongCodes);
+		addSet.removeAll(new HashSet<>(originalList));
+		Set<String> removeSet = new HashSet<>(originalList);
+		removeSet.removeAll(new HashSet<>(dongCodes));
+		
+		List<String> removeList = new ArrayList<String>(removeSet); 
+		List<String> addList = new ArrayList<String>(addSet);
+		
+		if(removeList.size() > 0) {
+			MemberFavoriteRegion removeMfr = new MemberFavoriteRegion(id, removeList);
+			memberMapper.removeFavoriteRegions(removeMfr);
+		}
+		if(addList.size() > 0) {
+			MemberFavoriteRegion addMfr = new MemberFavoriteRegion(id, addList);
+			memberMapper.addFavoriteRegions(addMfr);
+		}
 	}
 	
 }

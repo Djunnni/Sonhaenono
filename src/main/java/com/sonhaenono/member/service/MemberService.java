@@ -80,4 +80,17 @@ public interface MemberService {
 	 * @throws Exception
 	 */
 	public boolean changeType(String id, MemberType type) throws Exception;
+	/**
+	 * 유저 관심지역을 조회합니다.
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	public List<String> getFavoriteRegions(String id) throws Exception;
+	/**
+	 * 유저 관심지역을 설정합니다.
+	 * @param id
+	 * @param dongCodes
+	 */
+	public void setFavoriteRegions(String id, List<String> dongCodes) throws Exception;
 }
