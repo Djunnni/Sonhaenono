@@ -3,6 +3,7 @@ package com.sonhaenono.member.mapper;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -24,4 +25,5 @@ public interface MemberMapper {
 	List<String> getFavoriteRegions(String id) throws SQLException;
 	void addFavoriteRegions(MemberFavoriteRegion addMfr) throws SQLException;
 	void removeFavoriteRegions(MemberFavoriteRegion removeMfr) throws SQLException;
+	Optional<MemberDto> findOneWithAuthoritiesById(String id);
 }

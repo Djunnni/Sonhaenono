@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,11 +21,30 @@ import com.sonhaenono.member.model.MemberType;
 @Service
 public class MemberServiceImpl implements MemberService {
 
+	private final MemberMapper memberMapper;
+	private final PasswordEncoder PasswordEncoder;
+
 	@Autowired
-	MemberMapper memberMapper;
+	public MemberServiceImpl(MemberMapper memberMapper, PasswordEncoder passwordEncoder) {
+		this.memberMapper = memberMapper;
+		this.PasswordEncoder = passwordEncoder;
+	}
 	
 	@Override
-	public void joinMember(MemberDto member) throws Exception {
+	@Transactional
+	public void joinMember(MemberDto memberDto) throws Exception {
+		if(memberMapper.findOneWithAuthoritiesById(memberDto.getId()).orElse(null) != null) {
+			throw new RuntimeException("이미 가입되어 있는 유저입니다.");
+		}
+		
+		MemberDto member = new MemberDto();
+		member.setId(memberDto.getId());
+		member.setPassword(PasswordEncoder.encode(memberDto.getPassword()));
+		member.setName(memberDto.getName());
+		member.setEmail(memberDto.getEmail());
+		member.setPhone(memberDto.getPhone());
+		member.setType(memberDto.getType());
+		
 		memberMapper.joinMember(member);
 	}
 

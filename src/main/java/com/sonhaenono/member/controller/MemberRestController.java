@@ -1,17 +1,15 @@
 package com.sonhaenono.member.controller;
 
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +33,7 @@ public class MemberRestController {
 	MemberService memberService;
 	
 	@GetMapping()
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<?> getMembers() throws Exception {
 		List<MemberDto> members = memberService.getMembers(null);
 		return new ResponseEntity<List<MemberDto>>(members, HttpStatus.OK);
@@ -138,30 +137,4 @@ public class MemberRestController {
 		return new ResponseEntity<List<String>>(regions, HttpStatus.OK);
 	}
 	
-	
-	@GetMapping("/login")
-	public String login(@Value("session.key") String key, @RequestParam Map<String,String> map, HttpSession session) throws Exception {
-		MemberDto member = memberService.loginMember(map);
-		if(member != null) {
-			session.setAttribute(key, member);
-		}
-		return null;
-	}
-	
-	@GetMapping("/logout")
-	public String logout(@Value("session.key") String key, HttpSession session) {
-		// 관련된 속성을 지우는 동작 수행
-		Enumeration<String> names = session.getAttributeNames();
-		while(names.hasMoreElements()) {
-			String _key = names.nextElement();
-			if(_key.equals(key)) {
-				session.removeAttribute(_key);
-			}
-		}
-		// 세션 초기화
-		session.invalidate();
-		
-		// 리다이렉트
-		return "redirect:/";
-	}
 }

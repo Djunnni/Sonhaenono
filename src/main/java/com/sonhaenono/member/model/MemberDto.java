@@ -1,23 +1,24 @@
 package com.sonhaenono.member.model;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
-@SuppressWarnings("serial")
-public class MemberDto implements Serializable {
+public class MemberDto {
 	
-	@NotBlank
+	@NotNull
 	@Size(min = 5, max = 20)
 	@Pattern(regexp = "[0-9a-z_-]+")
 	private String id; // 아이디
 	
+	@JsonProperty(access = Access.WRITE_ONLY)
+	@NotNull
 	@Size(min = 8, max = 16)
 	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$")
 	private String password; // 비밀번호

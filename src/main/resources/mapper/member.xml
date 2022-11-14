@@ -32,6 +32,9 @@
 		<result column="type" property="type" typeHandler="com.sonhaenono.member.type.EnumMemberTypeHandler"/>
 	</resultMap>
 	
+	<select id="findOneWithAuthoritiesById" parameterType="string" resultMap="member_full">
+		select * from members where id = #{id}
+	</select>
 	<select id="loginMember" parameterType="map" resultMap="member_light">
 		select id, password, name, type
 		from members
