@@ -16,19 +16,19 @@ import org.springframework.stereotype.Component;
 public class LoggingAspect {
 	private Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 	
-	@Before(value = "execution(* com.sonhaenono..*.*(..))")
+	@Before(value = "execution(* com.sonhaenono..service.*.*(..)) or execution(* com.sonhaenono..controller.*.*(..))")
 	public void loggin(JoinPoint joinPoint) {
 		logger.debug("before call method : {}", joinPoint.getSignature());
 		logger.debug("메서드 선언부: {} 전달 파라미터 : {}", joinPoint.getSignature(), Arrays.toString(joinPoint.getArgs()));
 	}
 
-	@AfterReturning(value = "execution(* com.sonhaenono..*.*(..))", returning = "obj")
+	@AfterReturning(value = "execution(* com.sonhaenono..service.*.*(..)) or execution(* com.sonhaenono..controller.*.*(..))", returning = "obj")
 	public void afterReturningMethod(JoinPoint joinPoint, Object obj) {
 		logger.debug("afterReturning call method : {} ", joinPoint.getSignature());
 		logger.debug("return value : {}", obj);
 	}
 	
-	@AfterThrowing(value = "execution(* com.sonhaenono..*.*(..))", throwing = "exception")
+	@AfterThrowing(value = "execution(* com.sonhaenono..service.*.*(..)) or execution(* com.sonhaenono..controller.*.*(..))", throwing = "exception")
 	public void afterThrowingMethod(JoinPoint joinPoint, Exception exception) {
 		logger.debug("afterThrowing call method : {}", joinPoint.getSignature());
 		logger.debug("exception : {}", exception);
