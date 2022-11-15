@@ -24,6 +24,7 @@ import com.sonhaenono.exception.ExceptionEnum;
 import com.sonhaenono.member.model.MemberDto;
 import com.sonhaenono.member.model.MemberType;
 import com.sonhaenono.member.service.MemberService;
+import com.sonhaenono.util.SecurityUtil;
 
 @RestController
 @RequestMapping("/api/member")
@@ -33,7 +34,9 @@ public class MemberRestController {
 	MemberService memberService;
 	
 	@GetMapping()
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<?> getMembers() throws Exception {
+		SecurityUtil.getCurrentUserId();
 		List<MemberDto> members = memberService.getMembers(null);
 		return new ResponseEntity<List<MemberDto>>(members, HttpStatus.OK);
 	}

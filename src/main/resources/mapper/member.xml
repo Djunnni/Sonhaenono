@@ -35,11 +35,6 @@
 	<select id="findOneWithAuthoritiesById" parameterType="string" resultMap="member_full">
 		select * from members where id = #{id}
 	</select>
-	<select id="loginMember" parameterType="map" resultMap="member_light">
-		select id, password, name, type
-		from members
-		where id = #{id} and password = #{password}
-	</select>
 	
 	<select id="getMembers" resultMap="member_full">
 		select * from members;
@@ -63,11 +58,11 @@
 		<parameter property="phone" />
 	</parameterMap>
 	 -->
-	<select id="findPassword" parameterType="map" resultType="string">
+	<!-- <select id="findPassword" parameterType="map" resultType="string">
 		select password
 		from members
 		where id=#{id} and name=#{name} and phone=#{phone}
-	</select>
+	</select> -->
 	
 	<!-- 비밀번호 변경 -->
 	<!-- <parameterMap type="map" id="changePasswordQuery">

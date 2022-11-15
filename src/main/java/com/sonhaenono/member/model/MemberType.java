@@ -1,7 +1,7 @@
 package com.sonhaenono.member.model;
 
 public enum MemberType {
-	USER("U"), ADMIN("A");
+	ROLE_USER("U"), ROLE_ADMIN("A");
 	
 	private final String type;
 	
@@ -11,10 +11,10 @@ public enum MemberType {
 		return type;
 	}
 	public static MemberType parse(String str) throws Exception {
-		if("U".equals(str) || "USER".equals(str)) {
-			return USER;
-		} else if("A".equals(str) || "ADMIN".equals(str)) {
-			return ADMIN;
+		if("U".equals(str) || "ROLE_USER".equals(str)) {
+			return ROLE_USER;
+		} else if("A".equals(str) || "ROLE_ADMIN".equals(str)) {
+			return ROLE_ADMIN;
 		} else {
 			return null;
 		}

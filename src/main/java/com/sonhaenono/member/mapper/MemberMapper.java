@@ -14,7 +14,6 @@ import com.sonhaenono.member.model.MemberFavoriteRegion;
 public interface MemberMapper {
 
 	void joinMember(MemberDto member) throws SQLException;
-	MemberDto loginMember(Map<String, String> map) throws SQLException;
 	MemberDto getMemberById(String id) throws SQLException;
 	List<MemberDto> getMembers() throws SQLException;
 	int existMemberId(String id) throws SQLException;

@@ -1,7 +1,6 @@
 package com.sonhaenono.member.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -49,12 +48,6 @@ public class MemberServiceImpl implements MemberService {
 		
 		memberMapper.joinMember(member);
 	}
-
-	@Override
-	public MemberDto loginMember(Map<String, String> map) throws Exception {
-		return memberMapper.loginMember(map);
-	}
-
 	@Override
 	public MemberDto getMemberById(String id) throws Exception {
 		return memberMapper.getMemberById(id);

@@ -3,6 +3,7 @@ package com.sonhaenono.config;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -143,6 +144,19 @@ public class ApiExceptionAdvice {
 				e.getError().getStatus()
 			);
 	}
-	
+	@ExceptionHandler({AccessDeniedException.class})
+	public ResponseEntity<ApiExceptionEntity> accessDeniedException(HttpServletRequest request, final Exception exception) {
+		// exception.printStackTrace();
+		
+		ApiException e = new ApiException(ExceptionEnum.MEMBER_ACCESS_EXCEPTION);
+		return new ResponseEntity<ApiExceptionEntity>(
+				new ApiExceptionEntity(
+						e.getError().getStatus(),
+						e.getError().getCode(),
+						e.getError().getMessage()
+					),
+				e.getError().getStatus()
+			);
+	}
 	
 }

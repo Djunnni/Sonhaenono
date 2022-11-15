@@ -42,7 +42,7 @@ public class MemberDto {
 	private LocalDateTime updatedDate; // 수정날짜
 	
 	public MemberDto() {
-		type = MemberType.USER;
+		type = MemberType.ROLE_USER;
 	}
 	public MemberDto(String id, String password, String name, MemberType type, String phone, String email) {
 		this();

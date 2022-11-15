@@ -15,13 +15,6 @@ public interface MemberService {
 	 */
 	public void joinMember(MemberDto member) throws Exception;
 	/**
-	 * 아이디와 비밀번호를 받아 로그인합니다.
-	 * @param map
-	 * @return
-	 * @throws Exception
-	 */
-	public MemberDto loginMember(Map<String, String> map) throws Exception;
-	/**
 	 * 아이디로 유저 정보를 얻습니다.
 	 * @param id
 	 * @return
