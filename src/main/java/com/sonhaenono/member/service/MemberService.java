@@ -51,7 +51,7 @@ public interface MemberService {
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean changePassword(String id, String oldPassword, String newPassword) throws Exception;
+	// public boolean changePassword(String id, String oldPassword, String newPassword) throws Exception;
 	/**
 	 * 유저 정보 변경하기
 	 * @param id

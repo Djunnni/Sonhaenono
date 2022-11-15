@@ -75,17 +75,17 @@ public class MemberServiceImpl implements MemberService {
 		return memberMapper.findPassword(query);
 	}
 
-	@Override
-	@Transactional
-	public boolean changePassword(String id, String oldPassword, String newPassword) throws Exception {
-		Map<String, String> query = new HashMap<String, String>();
-		
-		query.put("id", id);
-		query.put("old_password", oldPassword);
-		query.put("new_password", newPassword);
-		
-		return memberMapper.changePassword(query) == 1;
-	}
+//	@Override
+//	@Transactional
+//	public boolean changePassword(String id, String oldPassword, String newPassword) throws Exception {
+//		Map<String, String> query = new HashMap<String, String>();
+//		
+//		query.put("id", id);
+//		query.put("old_password", PasswordEncoder.encode(oldPassword));
+//		query.put("new_password", PasswordEncoder.encode(newPassword));
+//		
+//		return memberMapper.changePassword(query) == 1;
+//	}
 
 	@Override
 	public boolean changeInfo(String id, Map<String, String> map) throws Exception {

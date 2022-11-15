@@ -36,12 +36,12 @@ public class MemberRestController {
 	@GetMapping()
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<?> getMembers() throws Exception {
-		SecurityUtil.getCurrentUserId();
 		List<MemberDto> members = memberService.getMembers(null);
 		return new ResponseEntity<List<MemberDto>>(members, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<?> getMember(@PathVariable(value = "id", required = true) String id) throws Exception {
 		MemberDto member = memberService.getMemberById(id);
 		if(member == null) {
@@ -51,6 +51,7 @@ public class MemberRestController {
 	}
 	
 	@PutMapping("/{id}/type")
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<?> changeType(@PathVariable("id") String id, @RequestBody String type) throws Exception {
 		MemberType parsedType = MemberType.parse(type);
 		if(parsedType == null) {
@@ -62,46 +63,59 @@ public class MemberRestController {
 		memberService.changeType(id, MemberType.parse(type));
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
-	@PutMapping("/{id}/info")
-	public ResponseEntity<?> changeInfo(@PathVariable("id") String id, @RequestBody Map<String, String> map) throws Exception {
-		if(!memberService.existMemberId(id)) {
-			throw new ApiException(ExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION);
+	
+	@GetMapping("/info")
+	public ResponseEntity<?> getInfo() throws Exception {
+		String id = SecurityUtil.getCurrentUserId().get();
+		
+		MemberDto member = memberService.getMemberById(id);
+		if(member == null) {
+			return new ResponseEntity<Object>(null, HttpStatus.NO_CONTENT);
 		}
+		return new ResponseEntity<MemberDto>(member, HttpStatus.OK);
+	}
+	
+	@PutMapping("/info")
+	public ResponseEntity<?> changeInfo(@RequestBody Map<String, String> map) throws Exception {
+		String id = SecurityUtil.getCurrentUserId().get();
+
 		memberService.changeInfo(id, map);
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
-	@GetMapping("/password/{memberId}")
-	public ResponseEntity<?> getPassword(@PathVariable(name = "memberId", required = true) String id, @RequestParam(name = "name", required = true) String name, @RequestParam(name = "phone", required = true) String phone) throws Exception {
-		if(!memberService.existMemberId(id)) {
-			throw new ApiException(ExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION);
-		}
-		String pw = memberService.findPassword(id, name, phone);
-		if(pw == null) {
-			throw new ApiException(ExceptionEnum.API_PARAMETER_EXCEPTION);
-		}
-		return new ResponseEntity<String>(pw, HttpStatus.OK);
-	}
+//	@GetMapping("/password/{memberId}")
+//	public ResponseEntity<?> getPassword(@PathVariable(name = "memberId", required = true) String id, @RequestParam(name = "name", required = true) String name, @RequestParam(name = "phone", required = true) String phone) throws Exception {
+//		if(!memberService.existMemberId(id)) {
+//			throw new ApiException(ExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION);
+//		}
+//		String pw = memberService.findPassword(id, name, phone);
+//		if(pw == null) {
+//			throw new ApiException(ExceptionEnum.API_PARAMETER_EXCEPTION);
+//		}
+//		return new ResponseEntity<String>(pw, HttpStatus.OK);
+//	}
 	
-	@PutMapping("/{id}/password")
-	public ResponseEntity<?> changePassword(@PathVariable("id") String id, @RequestBody Map<String, String> map) throws Exception {
-		String oldPassword = map.get("password");
-		String newPassword = map.get("new_password");
-		if(newPassword.equals(oldPassword)) {
-			throw new ApiException(ExceptionEnum.MEMBER_PASSWORD_EXCEPTION);
-		}
-		if(memberService.changePassword(id, oldPassword, newPassword)) {
-			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
-		}
+//	@PutMapping("/password")
+//	public ResponseEntity<?> changePassword(@RequestBody Map<String, String> map) throws Exception {
+//		String id = SecurityUtil.getCurrentUserId().get();
+//		
+//		String oldPassword = map.get("password");
+//		String newPassword = map.get("new_password");
+//		
+//		if(newPassword.equals(oldPassword)) {
+//			throw new ApiException(ExceptionEnum.MEMBER_PASSWORD_EXCEPTION);
+//		}
+//		if(memberService.changePassword(id, oldPassword, newPassword)) {
+//			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+//		}
+//		
+//		throw new ApiException(ExceptionEnum.MEMBER_PASSWORD_EXCEPTION);
+//	}
+	
+	@PutMapping("/favorite-regions")
+	public ResponseEntity<?> addFavoriteRegions(@RequestBody Map<String,List<String>> map) throws Exception {
+		String id = SecurityUtil.getCurrentUserId().get();
 		
-		throw new ApiException(ExceptionEnum.MEMBER_PASSWORD_EXCEPTION);
-	}
-	
-	@PutMapping("/{id}/favorite-regions")
-	public ResponseEntity<?> addFavoriteRegions(@PathVariable("id") String id, @RequestBody Map<String,List<String>> map) throws Exception {
-		if(!memberService.existMemberId(id)) {
-			throw new ApiException(ExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION);
-		}
 		List<String> dongCodes = null;
 		try {
 			dongCodes = Objects.requireNonNull(map.get("regions"));
@@ -113,11 +127,9 @@ public class MemberRestController {
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
-	@GetMapping("/{id}/favorite-regions")
-	public ResponseEntity<?> getFavoriteRegions(@PathVariable("id") String id) throws Exception {
-		if(!memberService.existMemberId(id)) {
-			throw new ApiException(ExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION);
-		}
+	@GetMapping("/favorite-regions")
+	public ResponseEntity<?> getFavoriteRegions() throws Exception {
+		String id = SecurityUtil.getCurrentUserId().get();
 		
 		List<String> regions = memberService.getFavoriteRegions(id);
 		return new ResponseEntity<List<String>>(regions, HttpStatus.OK);
