@@ -24,7 +24,7 @@
 		select * from board
 	</select>
 	
-	<select id="getArticle" parameterType="int" resultType="boardDto">
+	<select id="getArticle" parameterType="int" resultMap="board_full">
 		select * from board where no = #{no}
 	</select>
 	
