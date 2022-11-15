@@ -33,20 +33,9 @@ public class MemberRestController {
 	MemberService memberService;
 	
 	@GetMapping()
-	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<?> getMembers() throws Exception {
 		List<MemberDto> members = memberService.getMembers(null);
 		return new ResponseEntity<List<MemberDto>>(members, HttpStatus.OK);
-	}
-	
-	@PostMapping
-	public ResponseEntity<?> createMembers(@RequestBody @Valid MemberDto member) throws Exception {
-		if(memberService.existMemberId(member.getId())) {
-			throw new ApiException(ExceptionEnum.MEMBER_EXIST_EXCEPTION);
-		}
-		
-		memberService.joinMember(member);
-		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
@@ -56,12 +45,6 @@ public class MemberRestController {
 			return new ResponseEntity<Object>(null, HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<MemberDto>(member, HttpStatus.OK);
-	}
-	
-	@GetMapping("/id/{memberId}")
-	public ResponseEntity<?> existMember(@PathVariable("memberId") String id) throws Exception {
-		boolean exist = memberService.existMemberId(id);
-		return new ResponseEntity<Boolean>(exist, HttpStatus.OK);
 	}
 	
 	@PutMapping("/{id}/type")

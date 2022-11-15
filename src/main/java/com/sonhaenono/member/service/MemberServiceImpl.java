@@ -13,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sonhaenono.exception.ApiException;
+import com.sonhaenono.exception.ExceptionEnum;
 import com.sonhaenono.member.mapper.MemberMapper;
 import com.sonhaenono.member.model.MemberDto;
 import com.sonhaenono.member.model.MemberFavoriteRegion;
@@ -34,7 +36,7 @@ public class MemberServiceImpl implements MemberService {
 	@Transactional
 	public void joinMember(MemberDto memberDto) throws Exception {
 		if(memberMapper.findOneWithAuthoritiesById(memberDto.getId()).orElse(null) != null) {
-			throw new RuntimeException("이미 가입되어 있는 유저입니다.");
+			throw new ApiException(ExceptionEnum.MEMBER_EXIST_EXCEPTION);
 		}
 		
 		MemberDto member = new MemberDto();

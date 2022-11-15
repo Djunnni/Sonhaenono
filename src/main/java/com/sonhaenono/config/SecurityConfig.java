@@ -59,8 +59,16 @@ public class SecurityConfig {
 			
 			.and()
 			.authorizeRequests()
-			.antMatchers("/api/authenticate").permitAll()
-			.antMatchers(HttpMethod.POST, "/api/member/").permitAll()
+			.antMatchers(
+					HttpMethod.POST,
+					"/api/auth/signup",
+					"/api/auth/authenticate"
+			).permitAll() // 회원가입, 인증 API
+			.antMatchers(
+					HttpMethod.GET,
+					"/api/auth/checkId/**"
+			).permitAll() // 아이디 검증 API
+			.antMatchers("/api/dongcode").permitAll() // 동코드 조회 API
 			.anyRequest().authenticated()
 			
 			.and()
