@@ -15,6 +15,14 @@
 		<result column="type" property="type"/>
 	</resultMap>
 	
+	<resultMap type="commentDto" id="comment_full">
+		<id column="no" property="no"/>
+		<result column="member_id" property="memberId"/>
+		<result column="board_no" property="boardNo"/>
+		<result column="reply_at" property="replyAt"/>
+		<result column="content" property="content"/>
+	</resultMap>
+	
 	<insert id="writeArticle" parameterType="boardDto">
 		insert into board
 		(member_id, subject, content)
@@ -52,4 +60,11 @@
 		subject = #{subject}, content=#{content}
 		where no = #{no} and member_id=#{memberId}
 	</update>
+	
+	<select id="getComments" parameterType="int" resultMap="comment_full">
+		select * from comment where board_no=#{no}
+	</select>
+	<insert id="insertComment" parameterType="commentDto" useGeneratedKeys="true" keyProperty="no">
+		insert into comment (member_id, board_no, content) values (#{memberId}, #{boardNo}, #{content})
+	</insert>
 </mapper>

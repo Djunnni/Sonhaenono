@@ -39,7 +39,7 @@ public class BoardDto implements Serializable {
 	}
 	
 	public BoardDto() {
-		comments = new ArrayList<CommentDto>();
+		
 	}
 
 	public BoardDto(int no, String memberId, String subject, String content, int hit, LocalDateTime createdAt,

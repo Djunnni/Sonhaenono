@@ -1,5 +1,6 @@
 package com.sonhaenono.board.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,10 @@ public class BoardServiceImpl implements BoardService {
 	@Transactional
 	public BoardDto getArticle(int no) throws Exception {
 		boardMapper.updateHit(no);
-		return boardMapper.getArticle(no);
+		BoardDto board = boardMapper.getArticle(no);
+		List<CommentDto> comments = boardMapper.getComments(no);
+		board.setComments(comments);
+		return board;
 	}
 
 	@Override
@@ -54,8 +58,12 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public CommentDto addComment(int boardNo, String memberId, CommentDto comment) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		comment.setBoardNo(boardNo);
+		comment.setMemberId(memberId);
+		comment.setReplyAt(LocalDateTime.now());
+		boardMapper.insertComment(comment);
+		
+		return comment;
 	}
 
 	@Override

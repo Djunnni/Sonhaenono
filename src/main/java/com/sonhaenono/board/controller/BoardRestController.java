@@ -1,8 +1,6 @@
 package com.sonhaenono.board.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -77,8 +75,7 @@ public class BoardRestController {
 		
 		CommentDto savedComment = boardService.addComment(boardNo, memberId, comment);
 		
-		Map<String, Object> map = new HashMap<>();
-		return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
+		return new ResponseEntity<CommentDto>(savedComment, HttpStatus.OK);
 
 	}
 	
