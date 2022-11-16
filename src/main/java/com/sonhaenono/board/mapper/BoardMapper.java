@@ -16,4 +16,5 @@ public interface BoardMapper {
 	int existArticle(int no) throws SQLException;
 	void updateArticle(BoardDto board) throws SQLException;
 	void updateHit(int no) throws SQLException;
+	boolean isArticleOwner(BoardDto board) throws SQLException;
 }

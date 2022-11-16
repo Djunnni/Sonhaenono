@@ -3,6 +3,7 @@ package com.sonhaenono.board.service;
 import java.util.List;
 
 import com.sonhaenono.board.model.BoardDto;
+import com.sonhaenono.board.model.CommentDto;
 
 public interface BoardService {
 	/**
@@ -11,7 +12,7 @@ public interface BoardService {
 	 * @return
 	 * @throws Exception
 	 */
-	void writeArticle(BoardDto board) throws Exception;
+	void writeArticle(String memberId, BoardDto board) throws Exception;
 	/**
 	 * 게시글 리스트를 조회합니다.
 	 * @return
@@ -42,6 +43,8 @@ public interface BoardService {
 	 * @param board
 	 * @return
 	 */
-	void updateArticle(int no, BoardDto board) throws Exception;
+	void updateArticle(int no, String memberId, BoardDto board) throws Exception;
+	CommentDto addComment(int boardNo, String memberId, CommentDto comment) throws Exception;
+	boolean isArticleOwner(int no, String memberId) throws Exception;
 
 }

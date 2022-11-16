@@ -1,6 +1,5 @@
 package com.sonhaenono.board.service;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sonhaenono.board.mapper.BoardMapper;
 import com.sonhaenono.board.model.BoardDto;
-import com.sonhaenono.exception.ApiException;
+import com.sonhaenono.board.model.CommentDto;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -18,9 +17,8 @@ public class BoardServiceImpl implements BoardService {
 	BoardMapper boardMapper;
 	
 	@Override
-	public void writeArticle(BoardDto board) throws Exception {
-		// TODO: board 타입 검증하기
-		
+	public void writeArticle(String memberId, BoardDto board) throws Exception {
+		board.setMemberId(memberId);
 		boardMapper.writeArticle(board);
 	}
 
@@ -48,11 +46,23 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	@Transactional
-	public void updateArticle(int no, BoardDto board) throws Exception {
-		// TODO: 유저 검증(업데이트 권한을 가진 사람인지)
-		// TODO: 타입 검증(게시글의 타입을 확인합니다.)
-		
+	public void updateArticle(int no, String memberId, BoardDto board) throws Exception {
+		board.setNo(no);
+		board.setMemberId(memberId);
 		boardMapper.updateArticle(board);
 	}
 
+	@Override
+	public CommentDto addComment(int boardNo, String memberId, CommentDto comment) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isArticleOwner(int no, String memberId) throws Exception {
+		BoardDto board = new BoardDto();
+		board.setNo(no);
+		board.setMemberId(memberId);
+		return boardMapper.isArticleOwner(board);
+	}
 }

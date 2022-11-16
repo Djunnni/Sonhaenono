@@ -11,6 +11,8 @@
 		<result column="hit" property="hit"/>
 		<result column="created_at" property="createdAt"/>
 		<result column="updated_at" property="updatedAt"/>
+		<result column="like_count" property="likeCount"/>
+		<result column="type" property="type"/>
 	</resultMap>
 	
 	<insert id="writeArticle" parameterType="boardDto">
@@ -24,6 +26,9 @@
 		select * from board
 	</select>
 	
+	<select id="isArticleOwner" parameterType="boardDto" resultType="boolean">
+		select if(count(*) = 1, 1, 0) from board where member_id=#{memberId} and no=#{no}
+	</select>
 	<select id="getArticle" parameterType="int" resultMap="board_full">
 		select * from board where no = #{no}
 	</select>
@@ -45,6 +50,6 @@
 	<update id="updateArticle" parameterType="boardDto">
 		update board set
 		subject = #{subject}, content=#{content}
-		where no = #{no}
+		where no = #{no} and member_id=#{memberId}
 	</update>
 </mapper>
