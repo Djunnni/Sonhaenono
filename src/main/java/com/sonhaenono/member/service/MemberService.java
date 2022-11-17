@@ -35,15 +35,6 @@ public interface MemberService {
 	 */
 	public boolean existMemberId(String id) throws Exception;
 	/**
-	 * 비밀번호 찾기
-	 * @param id
-	 * @param name
-	 * @param phone
-	 * @return
-	 * @throws Exception
-	 */
-	public String findPassword(String id, String name, String phone) throws Exception;
-	/**
 	 * 비밀번호 변경하기
 	 * @param id
 	 * @param oldPassword
@@ -51,7 +42,7 @@ public interface MemberService {
 	 * @return
 	 * @throws Exception
 	 */
-	// public boolean changePassword(String id, String oldPassword, String newPassword) throws Exception;
+	public boolean changePassword(String id, String oldPassword, String newPassword) throws Exception;
 	/**
 	 * 유저 정보 변경하기
 	 * @param id

@@ -4,19 +4,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sonhaenono.exception.ApiException;
@@ -83,34 +79,19 @@ public class MemberRestController {
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
-//	@GetMapping("/password/{memberId}")
-//	public ResponseEntity<?> getPassword(@PathVariable(name = "memberId", required = true) String id, @RequestParam(name = "name", required = true) String name, @RequestParam(name = "phone", required = true) String phone) throws Exception {
-//		if(!memberService.existMemberId(id)) {
-//			throw new ApiException(ExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION);
-//		}
-//		String pw = memberService.findPassword(id, name, phone);
-//		if(pw == null) {
-//			throw new ApiException(ExceptionEnum.API_PARAMETER_EXCEPTION);
-//		}
-//		return new ResponseEntity<String>(pw, HttpStatus.OK);
-//	}
-	
-//	@PutMapping("/password")
-//	public ResponseEntity<?> changePassword(@RequestBody Map<String, String> map) throws Exception {
-//		String id = SecurityUtil.getCurrentUserId().get();
-//		
-//		String oldPassword = map.get("password");
-//		String newPassword = map.get("new_password");
-//		
-//		if(newPassword.equals(oldPassword)) {
-//			throw new ApiException(ExceptionEnum.MEMBER_PASSWORD_EXCEPTION);
-//		}
-//		if(memberService.changePassword(id, oldPassword, newPassword)) {
-//			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
-//		}
-//		
-//		throw new ApiException(ExceptionEnum.MEMBER_PASSWORD_EXCEPTION);
-//	}
+	@PutMapping("/password")
+	public ResponseEntity<?> changePassword(@RequestBody Map<String, String> map) throws Exception {
+		String id = SecurityUtil.getCurrentUserId().get();
+		
+		String oldPassword = map.get("password");
+		String newPassword = map.get("new_password");
+		
+		if(memberService.changePassword(id, oldPassword, newPassword)) {
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		}
+		
+		throw new ApiException(ExceptionEnum.MEMBER_PASSWORD_EXCEPTION);
+	}
 	
 	@PutMapping("/favorite-regions")
 	public ResponseEntity<?> addFavoriteRegions(@RequestBody Map<String,List<String>> map) throws Exception {

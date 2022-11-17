@@ -32,8 +32,8 @@
 		<result column="type" property="type" typeHandler="com.sonhaenono.member.type.EnumMemberTypeHandler"/>
 	</resultMap>
 	
-	<select id="findOneWithAuthoritiesById" parameterType="string" resultMap="member_full">
-		select * from members where id = #{id}
+	<select id="findOneWithAuthoritiesById" parameterType="string" resultMap="member_light">
+		select id, password, name, type from members where id = #{id}
 	</select>
 	
 	<select id="getMembers" resultMap="member_full">
@@ -45,24 +45,11 @@
 	</select>
 	
 	<!--  아이디 중복 체크 -->
-	<select id="existMemberId" parameterType="string" resultType="int">
-		select count(id)
+	<select id="existMemberId" parameterType="string" resultType="boolean">
+		select if(count(id) > 0, 1, 0)
 		from members
 		where id=#{id}
 	</select>
-	
-	<!-- 비밀번호 찾기 -->
-	<!-- <parameterMap type="map" id="findPasswordQuery">
-		<parameter property="id" />
-		<parameter property="name" />
-		<parameter property="phone" />
-	</parameterMap>
-	 -->
-	<!-- <select id="findPassword" parameterType="map" resultType="string">
-		select password
-		from members
-		where id=#{id} and name=#{name} and phone=#{phone}
-	</select> -->
 	
 	<!-- 비밀번호 변경 -->
 	<!-- <parameterMap type="map" id="changePasswordQuery">
@@ -74,7 +61,7 @@
 	<update id="changePassword" parameterType="map">
 		update members 
 		set password = #{new_password}
-		where id=#{id} and password=#{old_password}
+		where id=#{id}
 	</update>
 	
 	<!-- 유저 정보 변경 -->

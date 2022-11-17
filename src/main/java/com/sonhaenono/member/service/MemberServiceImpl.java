@@ -30,6 +30,11 @@ public class MemberServiceImpl implements MemberService {
 		this.memberMapper = memberMapper;
 		this.PasswordEncoder = passwordEncoder;
 	}
+
+	@Override
+	public boolean existMemberId(String id) throws Exception {
+		return memberMapper.existMemberId(id);
+	}
 	
 	@Override
 	@Transactional
@@ -38,16 +43,10 @@ public class MemberServiceImpl implements MemberService {
 			throw new ApiException(ExceptionEnum.MEMBER_EXIST_EXCEPTION);
 		}
 		
-		MemberDto member = new MemberDto();
-		member.setId(memberDto.getId());
-		member.setPassword(PasswordEncoder.encode(memberDto.getPassword()));
-		member.setName(memberDto.getName());
-		member.setEmail(memberDto.getEmail());
-		member.setPhone(memberDto.getPhone());
-		member.setType(memberDto.getType());
-		
-		memberMapper.joinMember(member);
+		memberDto.setPassword(PasswordEncoder.encode(memberDto.getPassword()));
+		memberMapper.joinMember(memberDto);
 	}
+	
 	@Override
 	public MemberDto getMemberById(String id) throws Exception {
 		return memberMapper.getMemberById(id);
@@ -59,33 +58,26 @@ public class MemberServiceImpl implements MemberService {
 		return memberMapper.getMembers();
 	}
 
-	@Override
-	public boolean existMemberId(String id) throws Exception {
-		return memberMapper.existMemberId(id) > 0;
-	}
 
 	@Override
-	public String findPassword(String id, String name, String phone) throws Exception {
+	@Transactional
+	public boolean changePassword(String id, String oldPassword, String newPassword) throws Exception {
+		// 현재 비밀번호와 이전 비밀번호가 동일하다면 return false
+		if(newPassword.equals(oldPassword)) {
+			return false;
+		} 
+		// DB에 저장된 암호화된 비밀번호와 이전 비밀번호가 일치하는지 확인
+		String encodedPassword = memberMapper.findOneWithAuthoritiesById(id).get().getPassword();
+		if(!PasswordEncoder.matches(oldPassword, encodedPassword)) {
+			return false;
+		}
+		
 		Map<String, String> query = new HashMap<String, String>();
-		
 		query.put("id", id);
-		query.put("name", name);
-		query.put("phone", phone);
+		query.put("new_password", PasswordEncoder.encode(newPassword));
 		
-		return memberMapper.findPassword(query);
+		return memberMapper.changePassword(query) != 0;
 	}
-
-//	@Override
-//	@Transactional
-//	public boolean changePassword(String id, String oldPassword, String newPassword) throws Exception {
-//		Map<String, String> query = new HashMap<String, String>();
-//		
-//		query.put("id", id);
-//		query.put("old_password", PasswordEncoder.encode(oldPassword));
-//		query.put("new_password", PasswordEncoder.encode(newPassword));
-//		
-//		return memberMapper.changePassword(query) == 1;
-//	}
 
 	@Override
 	public boolean changeInfo(String id, Map<String, String> map) throws Exception {
