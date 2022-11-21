@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sonhaenono.house.mapper.HouseMapper">
+	<select id="search" parameterType="houseSearchQuery" resultType="houseInfoDto">
+		select aptCode, apartmentName, CONCAT(sigunguCode, eubmyundongCode, landCode, bonbun, bubun) as pnu, dongCode, lng, lat from houseinfo
+
+		<where>
+			<trim suffixOverrides="and">
+				<if test="
+					southWestLat != null and southWestLat != '' and
+					southWestLng != null and southWestLng != '' and 
+					northEastLat != null and northEastLat != '' and
+					northEastLng != null and northEastLng != ''">
+					lng between #{southWestLng} and #{northEastLng} and lat between #{southWestLat} and #{northEastLat} and
+				</if>
+				<if test="aptName != null and aptName != ''">
+					apartmentName like CONCAT('%',#{aptName},'%') and
+				</if>
+				<if test="dongCode != null and dongCode !=''">
+					dongCode = #{dongCode} and
+				</if>
+				<if test="buildYearRange != -1">
+					DATE_FORMAT(now(),'%Y') - buildYear &lt; #{buildYearRange} and
+				</if>
+			</trim>
+		</where>
+	</select>
+</mapper>

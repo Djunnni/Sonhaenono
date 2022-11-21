@@ -74,7 +74,8 @@ public class SecurityConfig {
 			.antMatchers(
 					HttpMethod.GET,
 					"/api/auth/checkId/**", // 아이디 검증 API
-					"/api/board/**"
+					"/api/board/**",
+					"/api/house/**"
 			).permitAll() 
 			.antMatchers("/api/dongcode").permitAll() // 동코드 조회 API
 			.anyRequest().authenticated()

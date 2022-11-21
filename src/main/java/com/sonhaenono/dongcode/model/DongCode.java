@@ -1,9 +1,12 @@
 package com.sonhaenono.dongcode.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "동코드")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DongCode {
 	@ApiModelProperty(example = "1117010400")
 	private String dongCode;
