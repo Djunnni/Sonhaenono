@@ -29,12 +29,14 @@ public class HouseInfoDto {
 	private String lng;
 	private String lat;
 	
+	private String pnu;
+	
 	public HouseInfoDto() {}
 	
 	public HouseInfoDto(long aptCode, int buildYear, String roadName, String roadNameBonbun, String roadNameBubun,
 			String roadNameSeq, String roadNameBasementCode, String roadNameCode, String dong, String bonbun,
 			String bubun, String sigunguCode, String eubmyundongCode, String dongCode, String landCode,
-			String apartmentName, String jibun, String lng, String lat) {
+			String apartmentName, String jibun, String lng, String lat, String pnu) {
 		this.aptCode = aptCode;
 		this.buildYear = buildYear;
 		this.roadName = roadName;
@@ -54,6 +56,7 @@ public class HouseInfoDto {
 		this.jibun = jibun;
 		this.lng = lng;
 		this.lat = lat;
+		this.pnu = pnu;
 	}
 	public long getAptCode() {
 		return aptCode;
@@ -168,6 +171,14 @@ public class HouseInfoDto {
 	}
 	public void setLat(String lat) {
 		this.lat = lat;
+	}
+
+	public String getPnu() {
+		return pnu;
+	}
+
+	public void setPnu(String pnu) {
+		this.pnu = pnu;
 	}
 	
 	

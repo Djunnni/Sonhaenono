@@ -27,4 +27,12 @@
 			</trim>
 		</where>
 	</select>
+	
+	<select id="findByPnu" parameterType="string" resultType="houseInfoDto">
+		select * from houseinfo where CONCAT(sigunguCode, eubmyundongCode, landCode, bonbun, bubun) = #{pnu}
+	</select>
+	
+	<select id="findDealsByPnu" parameterType="string" resultType="aptDealDto">
+		select * from aptDeal where pnu = #{pnu}
+	</select>
 </mapper>

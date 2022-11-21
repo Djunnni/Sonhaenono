@@ -3,10 +3,13 @@ package com.sonhaenono.house.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sonhaenono.house.mapper.HouseMapper;
+import com.sonhaenono.house.model.AptDealDto;
 import com.sonhaenono.house.model.HouseInfoDto;
 import com.sonhaenono.house.model.HouseSearchQuery;
 
@@ -43,6 +46,16 @@ public class HouseServiceImpl implements HouseService {
 			searchQuery.setNorthEastLng(Float.parseFloat(northEastLng));
 		
 		return houseMapper.search(searchQuery);
+	}
+
+	@Override
+	public HouseInfoDto findByPnu(String pnu) {
+		return houseMapper.findByPnu(pnu);
+	}
+
+	@Override
+	public List<AptDealDto> findDealsByPnu(String pnu) {
+		return houseMapper.findDealsByPnu(pnu);
 	}
 
 }
