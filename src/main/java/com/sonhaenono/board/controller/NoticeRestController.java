@@ -27,50 +27,50 @@ import com.sonhaenono.util.SecurityUtil;
 
 
 @RestController
-@RequestMapping("/api/board")
-public class BoardRestController {
+@RequestMapping("/api/notice")
+public class NoticeRestController {
 
-	private static final Logger logger = LoggerFactory.getLogger(BoardRestController.class);
+	private static final Logger logger = LoggerFactory.getLogger(NoticeRestController.class);
 	
 	@Autowired
 	private BoardService boardService;
-	
+
 	@PostMapping
-	public ResponseEntity<?> writeArticle(@RequestBody @Valid BoardDto board) throws Exception {
+	public ResponseEntity<?> writeNotice(@RequestBody @Valid BoardDto board) throws Exception {
 		String memberId = SecurityUtil.getCurrentUserId().get();
-		boardService.writeArticle(memberId, board);
+		boardService.writeNotice(memberId, board);
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	@GetMapping
-	public ResponseEntity<?> getArticles() throws Exception {
-		List<BoardDto> articles = boardService.getArticles();
-		return new ResponseEntity<List<BoardDto>>(articles, HttpStatus.OK);
+	public ResponseEntity<?> getNotices() throws Exception {
+		List<BoardDto> notices = boardService.getNotices();
+		return new ResponseEntity<List<BoardDto>>(notices, HttpStatus.OK);
 	}
-	@GetMapping("/{no}")
-	public ResponseEntity<?> getArticle(@PathVariable(name="no", required = true) int no) throws Exception {
-		BoardDto article = boardService.getArticle(no);
-		if(article == null) {
+	@GetMapping("/{noticeNo}")
+	public ResponseEntity<?> getNotice(@PathVariable(name="noticeNo", required = true) int no) throws Exception {
+		BoardDto notice = boardService.getNotice(no);
+		if(notice == null) {
 			throw new ApiException(ExceptionEnum.BOARD_NOT_EXIST_EXCEPTION);
 		}
-		return new ResponseEntity<BoardDto>(article, HttpStatus.OK);
+		return new ResponseEntity<BoardDto>(notice, HttpStatus.OK);
 	}
 	
-	@PostMapping("/{no}/like")
-	public ResponseEntity<?> ArticleLike(@PathVariable(name="no", required = true) int no) throws Exception {
+	@PostMapping("/{noticeNo}/like")
+	public ResponseEntity<?> ArticleLike(@PathVariable(name="noticeNo", required = true) int no) throws Exception {
 		String memberId = SecurityUtil.getCurrentUserId().get();
 		//int like = BoardService.ArticleLike(no);
 		throw new ApiException(ExceptionEnum.API_NEW_FUNCTION_WAIT_REQUEST);
 	}
 	
-	@PostMapping("/{no}/unlike")
-	public ResponseEntity<?> articleUnlike(@PathVariable(name="no", required = true) int no) throws Exception {
+	@PostMapping("/{noticeNo}/unlike")
+	public ResponseEntity<?> articleUnlike(@PathVariable(name="noticeNo", required = true) int no) throws Exception {
 		String memberId = SecurityUtil.getCurrentUserId().get();
 		//int like = BoardService.plusArticleLike(no);
 		throw new ApiException(ExceptionEnum.API_NEW_FUNCTION_WAIT_REQUEST);
 	}
 	
-	@PostMapping("/{boardNo}/comment")
-	public ResponseEntity<?> addComment(@PathVariable(name="boardNo") int boardNo, @RequestBody CommentDto comment) throws Exception {
+	@PostMapping("/{noticeNo}/comment")
+	public ResponseEntity<?> addComment(@PathVariable(name="noticeNo") int boardNo, @RequestBody CommentDto comment) throws Exception {
 		String memberId = SecurityUtil.getCurrentUserId().get();
 		
 		CommentDto savedComment = boardService.addComment(boardNo, memberId, comment);
@@ -79,24 +79,24 @@ public class BoardRestController {
 
 	}
 	
-	@PutMapping("/{no}")
-	public ResponseEntity<?> updateArticle(@PathVariable(name="no", required = true) int no, @RequestBody BoardDto board) throws Exception {
+	@PutMapping("/{noticeNo}")
+	public ResponseEntity<?> updateArticle(@PathVariable(name="noticeNo", required = true) int no, @RequestBody BoardDto board) throws Exception {
 		String memberId = SecurityUtil.getCurrentUserId().get();
 		if(!boardService.isArticleOwner(no, memberId)) {
 			throw new ApiException(ExceptionEnum.ACCESS_DENIED_EXCEPTION);
 		}
-		boardService.updateArticle(no, memberId, board);
+		boardService.updateNotice(no, memberId, board);
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);	
 	}
-	@DeleteMapping("/{no}")
-	public ResponseEntity<?> deleteArticle(@PathVariable(name="no", required = true) int no) throws Exception {
+	@DeleteMapping("/{noticeNo}")
+	public ResponseEntity<?> deleteArticle(@PathVariable(name="noticeNo", required = true) int no) throws Exception {
 		String memberId = SecurityUtil.getCurrentUserId().get();
 		if(!boardService.isArticleOwner(no, memberId)) {
 			throw new ApiException(ExceptionEnum.ACCESS_DENIED_EXCEPTION);
 		}
 		
 		if(boardService.existArticle(no)) {
-			boardService.deleteArticle(no);
+			boardService.deleteNotice(no);
 			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 		}
 		throw new ApiException(ExceptionEnum.BOARD_NOT_EXIST_EXCEPTION);

@@ -1,7 +1,9 @@
 package com.sonhaenono.board.service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,17 +20,6 @@ public class BoardServiceImpl implements BoardService {
 	BoardMapper boardMapper;
 	
 	@Override
-	public void writeArticle(String memberId, BoardDto board) throws Exception {
-		board.setMemberId(memberId);
-		boardMapper.writeArticle(board);
-	}
-
-	@Override
-	public List<BoardDto> getArticles() throws Exception {
-		return boardMapper.getArticles();
-	}
-
-	@Override
 	@Transactional
 	public BoardDto getArticle(int no) throws Exception {
 		boardMapper.updateHit(no);
@@ -37,12 +28,55 @@ public class BoardServiceImpl implements BoardService {
 		board.setComments(comments);
 		return board;
 	}
+	@Override
+	public BoardDto getArticle(String type, int no) throws Exception {
+		boardMapper.updateHit(no);
+		
+		Map<String, String> query = new HashMap<>();
+		query.put("no", String.valueOf(no));
+		query.put("type", type);
+		
+		BoardDto board = boardMapper.getArticleByType(query);
+		if(board == null) {
+			return null;
+		}
+		List<CommentDto> comments = boardMapper.getComments(no);
+		board.setComments(comments);
+		
+		return board;
+	}
 
+	@Override
+	public BoardDto getNotice(int no) throws Exception {
+		return getArticle("NOTICE", no);
+	}
+
+	@Override
+	public BoardDto getQna(int no) throws Exception {
+		return getArticle("QNA", no);
+	}
 	@Override
 	public void deleteArticle(int no) throws Exception {	
 		boardMapper.deleteArticle(no);
 	}
 
+	@Override
+	public void deleteArticle(int no, String type) throws Exception {
+		Map<String, String> query = new HashMap<>();
+		query.put("no", String.valueOf(no));
+		query.put("type", type);
+		boardMapper.deleteArticleByType(query);
+		
+	}
+	@Override
+	public void deleteNotice(int no) throws Exception {
+		deleteArticle(no, "NOTICE");
+	}
+	@Override
+	public void deleteQna(int no) throws Exception {
+		deleteArticle(no, "QNA");
+	}
+	
 	@Override
 	public boolean existArticle(int no) throws Exception {
 		return boardMapper.existArticle(no) > 0;
@@ -55,7 +89,21 @@ public class BoardServiceImpl implements BoardService {
 		board.setMemberId(memberId);
 		boardMapper.updateArticle(board);
 	}
-
+	
+	@Override
+	public void updateArticle(int no, String memberId, String type, BoardDto board) throws Exception {
+		board.setType(type);
+		updateArticle(no, memberId, board);
+		
+	}
+	@Override
+	public void updateNotice(int no, String memberId, BoardDto board) throws Exception {
+		updateArticle(no, memberId, "NOTICE", board);
+	}
+	@Override
+	public void updateQna(int no, String memberId, BoardDto board) throws Exception {
+		updateArticle(no, memberId, "QNA", board);
+	}
 	@Override
 	public CommentDto addComment(int boardNo, String memberId, CommentDto comment) throws Exception {
 		comment.setBoardNo(boardNo);
@@ -72,5 +120,47 @@ public class BoardServiceImpl implements BoardService {
 		board.setNo(no);
 		board.setMemberId(memberId);
 		return boardMapper.isArticleOwner(board);
+	}
+	
+	@Override
+	public void writeArticle(String memberId, BoardDto board) throws Exception {
+		board.setMemberId(memberId);
+		boardMapper.writeArticle(board);
+	}
+
+	@Override
+	public void writeArticle(String memberId, String type, BoardDto board) throws Exception {
+		board.setType(type);
+		writeArticle(memberId, board);
+	}
+
+	@Override
+	public void writeNotice(String memberId, BoardDto board) throws Exception {
+		writeArticle(memberId, "NOTICE", board);
+	}
+
+	@Override
+	public void writeQna(String memberId, BoardDto board) throws Exception {
+		writeArticle(memberId, "QNA", board);
+	}
+
+	@Override
+	public List<BoardDto> getArticles() throws Exception {
+		return boardMapper.getArticles();
+	}
+
+	@Override
+	public List<BoardDto> getArticles(String type) throws Exception {
+		return boardMapper.getArticlesByType(type);
+	}
+
+	@Override
+	public List<BoardDto> getNotices() throws Exception {
+		return getArticles("NOTICE");
+	}
+
+	@Override
+	public List<BoardDto> getQnas() throws Exception {
+		return getArticles("QNA");
 	}
 }

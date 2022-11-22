@@ -25,13 +25,17 @@
 	
 	<insert id="writeArticle" parameterType="boardDto">
 		insert into board
-		(member_id, subject, content)
+		(member_id, subject, content, type)
 		values
-		(#{memberId}, #{subject}, #{content})	
+		(#{memberId}, #{subject}, #{content}, #{type})	
 	</insert>
 	
 	<select id="getArticles" resultMap="board_full">
 		select * from board
+	</select>
+	
+	<select id="getArticlesByType" parameterType="string" resultMap="board_full">
+		select * from board where type = #{type}
 	</select>
 	
 	<select id="isArticleOwner" parameterType="boardDto" resultType="boolean">
@@ -40,9 +44,16 @@
 	<select id="getArticle" parameterType="int" resultMap="board_full">
 		select * from board where no = #{no}
 	</select>
+	<select id="getArticleByType" parameterType="map" resultMap="board_full">
+		select * from board where no = #{no} and type = #{type}
+	</select>
 	
 	<delete id="deleteArticle" parameterType="int">
 		delete from board where no = #{no}
+	</delete>
+	
+	<delete id="deleteArticleByType" parameterType="map">
+		delete from board where no = #{no} and type = #{type}
 	</delete>
 	
 	<select id="existArticle" parameterType="int" resultType="int">
@@ -58,7 +69,7 @@
 	<update id="updateArticle" parameterType="boardDto">
 		update board set
 		subject = #{subject}, content=#{content}
-		where no = #{no} and member_id=#{memberId}
+		where no = #{no} and member_id=#{memberId} and type = #{type}
 	</update>
 	
 	<select id="getComments" parameterType="int" resultMap="comment_full">
