@@ -18,6 +18,7 @@ import com.sonhaenono.house.model.AptDealDto;
 import com.sonhaenono.house.model.AptDealSummary;
 import com.sonhaenono.house.model.HouseInfoDto;
 import com.sonhaenono.house.service.HouseService;
+import com.sonhaenono.news.model.NewsDto;
 
 @RestController
 @RequestMapping("/api/house")
