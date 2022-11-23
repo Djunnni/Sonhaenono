@@ -3,12 +3,11 @@ package com.sonhaenono.house.service;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sonhaenono.house.mapper.HouseMapper;
+import com.sonhaenono.house.model.AptAverageDealDto;
 import com.sonhaenono.house.model.AptDealDto;
 import com.sonhaenono.house.model.HouseInfoDto;
 import com.sonhaenono.house.model.HouseSearchQuery;
@@ -56,6 +55,12 @@ public class HouseServiceImpl implements HouseService {
 	@Override
 	public List<AptDealDto> findDealsByPnu(String pnu) {
 		return houseMapper.findDealsByPnu(pnu);
+	}
+
+	@Override
+	public List<AptAverageDealDto> findDealSummaryByPnu(String pnu) {
+		// TODO Auto-generated method stub
+		return houseMapper.findDealSummaryByPnu(pnu);
 	}
 
 }

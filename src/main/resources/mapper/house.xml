@@ -3,6 +3,7 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sonhaenono.house.mapper.HouseMapper">
+
 	<select id="search" parameterType="houseSearchQuery" resultType="houseInfoDto">
 		select aptCode, apartmentName, CONCAT(sigunguCode, eubmyundongCode, landCode, bonbun, bubun) as pnu, dongCode, lng, lat from houseinfo
 
@@ -34,5 +35,8 @@
 	
 	<select id="findDealsByPnu" parameterType="string" resultType="aptDealDto">
 		select * from aptDeal where pnu = #{pnu}
+	</select>
+	<select id="findDealSummaryByPnu" parameterType="string" resultType="aptAverageDealDto">
+		select dealYear, ROUND(avg(replace(dealAmount, ',','')), 0) as averageDeal from aptDeal where pnu=#{pnu} group by dealYear order by dealYear;
 	</select>
 </mapper>
