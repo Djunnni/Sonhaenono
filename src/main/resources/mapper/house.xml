@@ -34,7 +34,7 @@
 	</select>
 	
 	<select id="findDealsByPnu" parameterType="string" resultType="aptDealDto">
-		select * from aptDeal where pnu = #{pnu}
+		select * from aptDeal where pnu = #{pnu} order by dealYear desc , dealMonth desc , dealDay desc
 	</select>
 	<select id="findDealSummaryByPnu" parameterType="string" resultType="aptAverageDealDto">
 		select dealYear, ROUND(avg(replace(dealAmount, ',','')), 0) as averageDeal from aptDeal where pnu=#{pnu} group by dealYear order by dealYear;
