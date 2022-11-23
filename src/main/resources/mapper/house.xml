@@ -5,7 +5,7 @@
 <mapper namespace="com.sonhaenono.house.mapper.HouseMapper">
 
 	<select id="search" parameterType="houseSearchQuery" resultType="houseInfoDto">
-		select aptCode, apartmentName, CONCAT(sigunguCode, eubmyundongCode, landCode, bonbun, bubun) as pnu, dongCode, lng, lat from houseinfo
+		select aptCode, apartmentName,dong, CONCAT(sigunguCode, eubmyundongCode, landCode, bonbun, bubun) as pnu, dongCode, lng, lat from houseinfo
 
 		<where>
 			<trim suffixOverrides="and">
