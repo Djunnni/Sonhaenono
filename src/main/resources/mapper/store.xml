@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sonhaenono.store.mapper.StoreMapper">
+
+	<select id="search" parameterType="storeSearchQuery" resultType="storeInfoDto">
+		select bizesNm, pnu, indsMclsCd, lng, lat from storeInfo
+
+		<where>
+			<trim suffixOverrides="and">
+				<if test="
+					southWestLat != null and southWestLat != '' and
+					southWestLng != null and southWestLng != '' and 
+					northEastLat != null and northEastLat != '' and
+					northEastLng != null and northEastLng != ''">
+					lng between #{southWestLng} and #{northEastLng} and lat between #{southWestLat} and #{northEastLat} and
+				</if>
+				<if test="indsLclsCd != null and indsLclsCd != ''">
+					indsLclsCd = #{indsLclsCd} and
+				</if>
+				<if test="indsMclsCd != null and indsMclsCd != ''">
+					indsMclsCd = #{indsMclsCd} and
+				</if>
+				<if test="dongCode != null and dongCode !=''">
+					dongCode = #{dongCode} and
+				</if>
+			</trim>
+		</where>
+		limit 1000
+	</select>
+</mapper>

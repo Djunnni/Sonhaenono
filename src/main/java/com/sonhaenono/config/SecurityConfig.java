@@ -77,7 +77,8 @@ public class SecurityConfig {
 					"/api/notice/**",
 					"/api/qna/**",
 					"/api/house/**",
-					"/api/news/**"
+					"/api/news/**",
+					"/api/store/**"
 			).permitAll() 
 			.antMatchers("/api/dongcode").permitAll() // 동코드 조회 API
 			.anyRequest().authenticated()
